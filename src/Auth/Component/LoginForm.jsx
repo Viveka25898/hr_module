@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 import iSmartImg from "../assets/Web_Photo_Editor.jpg"
+import {useNavigate} from "react-router-dom"
 const LoginForm=(props)=>{
+  const navigate=useNavigate()
+  const handleLogin=()=>{
+    navigate("/dashboard")
+  }
     return(
         <>
           {/* This is Main Div  */}
@@ -38,6 +43,7 @@ const LoginForm=(props)=>{
                       <button
                         type="submit"
                         className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition"
+                        onClick={handleLogin}
                       >
                       Login
                       </button>

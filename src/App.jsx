@@ -1,17 +1,11 @@
-/* eslint-disable no-unused-vars */
-import './App.css'
-import AdminLogin from './Auth/Pages/AdminLogin'
-import TALogin from './Auth/Pages/TALogin'
-
+import {RouterProvider} from "react-router-dom"
+import {router} from "./Routes/Routes.jsx" 
 function App() {
+  
 
-  return (
-    <>
-
-    {/* Login Form  */}
-      <AdminLogin/>
-    </>
-  )
+  return <>
+ <RouterProvider router={router}/>  
+  </>;
 }
 
-export default App
+export default App;
