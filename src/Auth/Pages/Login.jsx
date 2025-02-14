@@ -1,10 +1,10 @@
 import LoginForm from "../Component/LoginForm"
 
 
-const SiteManagerLogin = () => {
+const Login = () => {
   return (
     <LoginForm heading={"Login of Site Manager"}/>
   )
 }
 
-export default SiteManagerLogin
+export default Login

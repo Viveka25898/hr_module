@@ -25,7 +25,7 @@ const SiteManagerSidebar = () => {
       >
         {/* Sidebar Header */}
         <div className="p-4 text-xl font-semibold bg-green-800 text-center">
-          Site Manager/Site Manager Name
+          Site Manager
         </div>
 
         {/* Sidebar Menu */}
@@ -43,7 +43,7 @@ const SiteManagerSidebar = () => {
             className="px-6 text-sm py-2 flex justify-between items-center hover:bg-green-600 cursor-pointer"
             onClick={() => setRequisitionOpen(!requisitionOpen)}
           >
-            <NavLink to="/dashboard" end>
+            <NavLink to="/dashboard/site-manager" end>
   Requisition Request
 </NavLink>
 
@@ -54,7 +54,7 @@ const SiteManagerSidebar = () => {
           {requisitionOpen && (
             <ul className="pl-8 bg-green-800">
               <li>
-              <NavLink to="/dashboard/manpower-request">
+              <NavLink to="/dashboard/site-manager/manpower-request">
                          Manpower Request
               </NavLink>
 
