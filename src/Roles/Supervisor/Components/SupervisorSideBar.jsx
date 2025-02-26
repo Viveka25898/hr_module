@@ -33,11 +33,16 @@ const SupervisorSideBar = () => {
         <ul className="mt-6">
           <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
 
-            
+            <NavLink to="/dashboard/supervisor">
+
               Dashboard
+            </NavLink>
             
           </li>
           <hr className="border-white mx-4" />
+          <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
+            <NavLink to="requests">Requests From Site Manager</NavLink>
+          </li>
          
         </ul>
       </div>

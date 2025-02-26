@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Auth/authSlice";
 import { toast } from "react-toastify";
+import ProfileImage from "../../../Auth/assets/profile-picture.jpg"
 
 const SiteManagerNavbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,7 +14,8 @@ const SiteManagerNavbar = () => {
 
   // ****************************Logout Handle Submit********************
   const handleLogout=()=>{
-          dispatch(logout())
+    dispatch(logout()); // Clear Redux state
+    navigate("/login"); // Redirect to login page
            toast.success("Logout Successfully! 🚀", {
                 position: "top-right",
                 autoClose: 3000, // Closes after 3 sec
@@ -43,7 +45,7 @@ const SiteManagerNavbar = () => {
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
                 <img
-                    src="/profile.jpg" // Replace with actual image path
+                    src={ProfileImage} // Replace with actual image path
                     alt="Profile"
                     className="w-9 h-9 rounded-full border-2 border-white"
                 />

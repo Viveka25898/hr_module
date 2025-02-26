@@ -24,7 +24,11 @@ const LoginForm=(props)=>{
             alert("Please Select the Role!")
             return
           }
-          dispatch(login({username,role}))
+
+    // Save user data to localStorage
+    const userData = { username, role };
+    dispatch(login(userData));
+    localStorage.setItem("showLoginToast", "true");
 
           //Routing on the basis of Role.
 

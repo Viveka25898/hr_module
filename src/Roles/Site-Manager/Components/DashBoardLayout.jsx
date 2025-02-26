@@ -13,7 +13,7 @@ const DashBoardLayout = () => {
     if (localStorage.getItem("showLoginToast") === "true") {
       toast.success("Login Successful! 🎉", {
         position: "top-right",
-        autoClose: 3000,
+        autoClose: 3000, 
       });
 
       // Remove flag so it doesn’t show again

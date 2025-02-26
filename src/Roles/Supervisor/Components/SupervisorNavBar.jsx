@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Auth/authSlice";
 import { toast } from "react-toastify";
+import ProfileImage from "../../../Auth/assets/profile-picture.jpg"
 
 const SupervisorNavBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,6 +14,7 @@ const SupervisorNavBar = () => {
 
   // ****************************Logout Handle Submit********************
   const handleLogout=()=>{
+    localStorage.removeItem("user");
           dispatch(logout())
           toast.success("Logout Successfully! 🚀", {
                           position: "top-right",
@@ -43,7 +45,7 @@ const SupervisorNavBar = () => {
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
                 <img
-                    src="/profile.jpg" // Replace with actual image path
+                    src={ProfileImage} // Replace with actual image path
                     alt="Profile"
                     className="w-9 h-9 rounded-full border-2 border-white"
                 />

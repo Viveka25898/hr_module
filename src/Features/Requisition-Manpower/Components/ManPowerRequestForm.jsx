@@ -47,6 +47,14 @@ const ManpowerRequestForm = () => {
       console.log("Form Submitted:", formData);
       // alert("Manpower Request Submitted Successfully!");
       showToast();
+      // Get existing requests from localStorage or initialize an empty array
+    const existingRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
+
+    // Add new request to the array
+    const updatedRequests = [...existingRequests, formData];
+
+    // Store in localStorage
+    localStorage.setItem("manpowerRequests", JSON.stringify(updatedRequests));
       setFormData({
         staffType: "",
         skill: "",
