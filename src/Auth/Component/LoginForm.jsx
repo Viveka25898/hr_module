@@ -6,24 +6,31 @@ import { useDispatch } from "react-redux";
 import { login } from "../authSlice";
 const LoginForm=(props)=>{
   // Declearing All the States 
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role,setRoleValue]=useState("")
+
+
   const dispatch=useDispatch()
   const navigate=useNavigate()
 
   // Navigate To Dashboard 
   
   const handleLoginFormSubmit=(e)=>{
-    e.preventDefault()
-    if(!role){
-      alert("Please Select the Role!")
-      return
-    }
-    dispatch(login({username,role}))
+          e.preventDefault()
+          if(!role){
+            alert("Please Select the Role!")
+            return
+          }
+          dispatch(login({username,role}))
 
-    //Routing on the basis of Role.
-    if(role === "site-manager") navigate("/dashboard/site-manager")
+          //Routing on the basis of Role.
+
+          //************************************For Site Managaer********************************************** */
+          if(role === "site-manager") navigate("/dashboard/site-manager")
+            // ****************************************For Supervisor***************************************
+            else if(role === "supervisor") navigate("/dashboard/supervisor")
 
   }
 
@@ -49,7 +56,7 @@ const LoginForm=(props)=>{
 
       <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8">
             <div className="w-full max-w-sm text-center">
-                <h2 className="text-2xl font-semibold mb-6">{props.heading}</h2>
+                <h2 className="text-5xl font-bold text-green-700 mb-8 font-mulish">{props.heading}</h2>
                   <form className="space-y-4" onSubmit={handleLoginFormSubmit}>
                       <input
                         type="text"
@@ -57,7 +64,7 @@ const LoginForm=(props)=>{
                         value={username}
                         onChange={(e)=>setUsername(e.target.value)}
                         required
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mulish"
                       />
 
                       <input
@@ -66,17 +73,22 @@ const LoginForm=(props)=>{
                         value={password}
                         onChange={(e)=>setPassword(e.target.value)}
                         required
-                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mulish"
                       />
-                      <select value={role} onChange={(e) => setRoleValue(e.target.value)} required>
-                            <option value="">Select Role</option>
-                            <option value="site-manager">Site Manager</option>
-                            <option value="hr-admin">HR Admin</option>
+                      <select
+                      className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={role} onChange={(e) => setRoleValue(e.target.value)} required>
+                            <option value="" className="font-mulish">Select Role</option>
+                            <option value="site-manager" className="font-mulish">Site Manager</option>
+                            <option value="hr-admin" className="font-mulish">HR Admin</option>
+                            <option value="supervisor" className="font-mulish">Supervisor</option>
+
+                            
                       </select>
 
                       <button
                         type="submit"
-                        className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition"                       
+                        className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-800 transition font-mulish"                       
                       >
                       Login
                       </button>

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Auth/authSlice";
 
-const SiteManagerNavbar = () => {
+const SupervisorNavBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const navigate=useNavigate()
@@ -62,4 +62,4 @@ const SiteManagerNavbar = () => {
   );
 };
 
-export default SiteManagerNavbar;
+export default SupervisorNavBar;

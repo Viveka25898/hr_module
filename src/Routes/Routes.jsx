@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+/* eslint-disable no-unused-vars */
 import {createBrowserRouter, Outlet} from "react-router-dom"
 import AuthLayout from "../Auth/AuthLayout"
 import Login from "../Auth/Pages/Login"
@@ -6,27 +8,40 @@ import ManpowerRequestForm from "../Features/Requisition-Manpower/Components/Man
 import SiteManagerDashboard from "../Roles/Site-Manager/Pages/SiteManagerDashboard"
 import ProtectedRoute from "./ProtectedRoutes"
 
+
+// **************************Supervisor*****************************
+import SupervisorDashboard from "../Roles/Supervisor/Pages/SupervisorDashboard"
+
+
+
 const SiteManagerLayout = () => (
     <SiteManagerDashboard>
       <Outlet /> {/* This will render nested routes */}
     </SiteManagerDashboard>
   );
+
+
+  const SupervisorLayout=()=>{
+  <SupervisorDashboard>
+        <Outlet/>
+  </SupervisorDashboard>
+}
   
   export const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/login",
       element: (
         <AuthLayout>
           <Login />
         </AuthLayout>
       ),
-      errorElement: <h1>Page Not Found!</h1>, // Graceful error handling
+     errorElement: <h1>Page Not Found!</h1>, // Graceful error handling
     },
     {
       path: "/dashboard/site-manager",
       element: (
         <ProtectedRoute allowedRoles={["site-manager"]}>
-          <SiteManagerLayout />
+          <SiteManagerDashboard />
         </ProtectedRoute>
       ),
       children: [
@@ -39,6 +54,15 @@ const SiteManagerLayout = () => (
           element: <ManpowerRequestForm />,
         },
       ],
+      
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes
     },
+    {
+      path:"/dashboard/supervisor",
+      element:(
+        <ProtectedRoute allowedRoles={["supervisor"]}>
+          <SupervisorDashboard />
+        </ProtectedRoute>
+      )
+    }
   ]);
