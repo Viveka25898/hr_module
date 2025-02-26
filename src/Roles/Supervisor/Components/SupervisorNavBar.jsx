@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Auth/authSlice";
+import { toast } from "react-toastify";
 
 const SupervisorNavBar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,6 +14,10 @@ const SupervisorNavBar = () => {
   // ****************************Logout Handle Submit********************
   const handleLogout=()=>{
           dispatch(logout())
+          toast.success("Logout Successfully! 🚀", {
+                          position: "top-right",
+                          autoClose: 3000, // Closes after 3 sec
+                        });
           navigate("/")
 
   }

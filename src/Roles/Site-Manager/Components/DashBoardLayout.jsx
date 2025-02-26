@@ -1,9 +1,25 @@
 /* eslint-disable react/prop-types */
+import { toast } from "react-toastify";
 import { Outlet } from "react-router-dom";
 import SiteManagerNavbar from "./NavBar";
 import SiteManagerSidebar from "./SideBar";
+import { useEffect } from "react";
 
 const DashBoardLayout = () => {
+
+  //Toaster
+  useEffect(() => {
+    // Check if login flag is set
+    if (localStorage.getItem("showLoginToast") === "true") {
+      toast.success("Login Successful! 🎉", {
+        position: "top-right",
+        autoClose: 3000,
+      });
+
+      // Remove flag so it doesn’t show again
+      localStorage.removeItem("showLoginToast");
+    }
+  }, []);
   return (
     <div className="flex h-screen">
       {/* Sidebar (Fixed Left & Always on Top) */}

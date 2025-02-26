@@ -2,8 +2,24 @@
 import { Outlet } from "react-router-dom";
 import SupervisorSideBar from "./SupervisorSideBar";
 import SupervisorNavBar from "./SupervisorNavBar";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const SupervisorDashboardLayout = () => {
+
+  //Toaster
+  useEffect(() => {
+      // Check if login flag is set
+      if (localStorage.getItem("showLoginToast") === "true") {
+        toast.success("Login Successful! 🎉", {
+          position: "top-right",
+          autoClose: 3000,
+        });
+  
+        // Remove flag so it doesn’t show again
+        localStorage.removeItem("showLoginToast");
+      }
+    }, []);
   return (
     <div className="flex h-screen">
       {/* Sidebar (Fixed Left & Always on Top) */}

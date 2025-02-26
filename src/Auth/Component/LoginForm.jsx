@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+;import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react"
 import iSmartImg from "../assets/Web_Photo_Editor.jpg"
 import {useNavigate} from "react-router-dom"
@@ -31,6 +32,8 @@ const LoginForm=(props)=>{
           if(role === "site-manager") navigate("/dashboard/site-manager")
             // ****************************************For Supervisor***************************************
             else if(role === "supervisor") navigate("/dashboard/supervisor")
+              //For Toaster
+              localStorage.setItem("showLoginToast", "true");
 
   }
 
