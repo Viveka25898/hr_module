@@ -1,28 +1,57 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
+import { FaEye, FaTimes } from "react-icons/fa";
 
 const SupervisorRequests = () => {
   const [requests, setRequests] = useState([]);
+  const [refreshKey, setRefreshKey] = useState(0); // 🔄 Refresh key to trigger updates
+  const [selectedCost, setSelectedCost] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  useEffect(() => {
-    // Fetch requests from localStorage
+  
+
+  const fetchRequests = () => {
     const storedRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
     setRequests(storedRequests);
+  };
+  useEffect(() => {
+    fetchRequests()
+  }, [refreshKey]); 
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (event.key === "manpowerRequests") {
+        setRefreshKey((prev) => prev + 1); // 🔄 Increment refresh key to trigger update
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
-  const handleReject = (index) => {
-    const updatedRequests = requests.filter((_, i) => i !== index);
+  const updateRequestStatus = (index, status) => {
+    let updatedRequests = [...requests];
+    updatedRequests[index] = { ...updatedRequests[index], supervisorStatus: status };
     setRequests(updatedRequests);
     localStorage.setItem("manpowerRequests", JSON.stringify(updatedRequests));
   };
 
-  const handleApprove = (index) => {
-    alert("Request Submitted to Approver!");
-    handleReject(index); // Remove request after approval
+  const handleReject = (index) => updateRequestStatus(index, "Rejected");
+  const handleApprove = (index) => updateRequestStatus(index, "Submitted");
+
+  const openPopup = (cost) => {
+    setSelectedCost(cost);
+    setIsPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedCost(null);
   };
 
   return (
-    <div className="p-6 bg-white shadow-md rounded-lg max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-green-600">Requests From Site Manager</h2>
+    <div className="p-6 bg-white shadow-md rounded-lg max-w-5xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-green-600">Requests From Site Manager || Site ID or Site Code</h2>
 
       {requests.length === 0 ? (
         <p className="text-gray-500">No requests available</p>
@@ -37,6 +66,7 @@ const SupervisorRequests = () => {
               <th className="p-2 border">Budget</th>
               <th className="p-2 border">Location</th>
               <th className="p-2 border">Actions</th>
+              <th className="p-2 border">Cost</th>
             </tr>
           </thead>
           <tbody>
@@ -48,14 +78,55 @@ const SupervisorRequests = () => {
                 <td className="p-2 border">{req.department}</td>
                 <td className="p-2 border">{req.budget}</td>
                 <td className="p-2 border">{req.location}</td>
-                <td className="p-2 border">
-                  <button onClick={() => handleReject(index)} className="bg-red-500 text-white px-2 py-1 rounded mr-2">Reject</button>
-                  <button onClick={() => handleApprove(index)} className="bg-blue-500 text-white px-2 py-1 rounded">Submit to Approver</button>
+                <td className="p-2 border text-center">
+                  {req.supervisorStatus === "Rejected" ? (
+                    <button className="bg-gray-400 text-white px-2 py-1 rounded cursor-not-allowed" disabled>
+                      Rejected
+                    </button>
+                  ) : req.supervisorStatus === "Submitted" ? (
+                    <button className="bg-gray-400 text-white px-2 py-1 rounded cursor-not-allowed" disabled>
+                      Submitted
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleReject(index)}
+                        className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-700 mr-2"
+                      >
+                        Reject
+                      </button>
+                      <button
+                        onClick={() => handleApprove(index)}
+                        className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-700"
+                      >
+                        Submit to Approver
+                      </button>
+                    </>
+                  )}
+                </td>
+                <td className="p-2 border text-center">
+                  <FaEye className="text-blue-600 cursor-pointer text-lg hover:text-blue-800" onClick={() => openPopup(req.budget)} />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Popup Content */}
+      {isPopupOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
+            <button onClick={closePopup} className="absolute top-2 right-2 text-gray-600 hover:text-red-600">
+              <FaTimes size={20} />
+            </button>
+            <h2 className="text-xl font-bold text-green-600 mb-4">Cost Details</h2>
+            <p className="text-gray-800 text-lg">Total Cost: ₹{selectedCost}</p>
+            <p className="text-gray-800 text-lg">Total Site Budget: ₹10,00,000</p>
+            <p className="text-gray-800 text-lg">Used Budget: ₹9,80,000</p>
+            <p className="text-gray-800 text-lg">Remaining Budget: ₹20,000</p>
+          </div>
+        </div>
       )}
     </div>
   );

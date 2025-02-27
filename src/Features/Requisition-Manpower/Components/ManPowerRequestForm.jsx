@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 
@@ -23,6 +24,13 @@ const ManpowerRequestForm = () => {
       autoClose: 3000, // Closes after 3 sec
     });
   };
+
+  //Forcefully Render The Component
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log("Manpower Request Form Mounted/Re-rendered");
+  }, [location.pathname]); 
 
   // Handle Input Changes
   const handleChange = (e) => {

@@ -16,6 +16,8 @@ import { useEffect } from "react"
 import { login } from "../Auth/authSlice"
 import { useDispatch } from "react-redux"
 import SupervisorRequests from "../Roles/Supervisor/Components/SupervisorsRequest"
+import MyRequests from "../Features/Requisition-Manpower/Components/MyRequests"
+import DashBoardLayout from "../Roles/Site-Manager/Components/DashBoardLayout"
 
 
 
@@ -48,18 +50,13 @@ import SupervisorRequests from "../Roles/Supervisor/Components/SupervisorsReques
       path: "/dashboard/site-manager",
       element: (
         <ProtectedRoute allowedRoles={["site-manager"]}>
-          <SiteManagerDashboard />
+          <DashBoardLayout />
         </ProtectedRoute>
       ),
       children: [
-        {
-          index: true, // Default route when "/dashboard/site-manager" is visited
-          element: <Home />,
-        },
-        {
-          path: "manpower-request", // Nested properly
-          element: <ManpowerRequestForm />,
-        },
+        { index: true, element: <Home /> }, // Default Page
+        { path: "manpower-request", element: <ManpowerRequestForm /> },
+        { path: "my-requests", element: <MyRequests /> }
       ],
       
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes

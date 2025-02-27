@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import { toast } from "react-toastify";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import SiteManagerNavbar from "./NavBar";
 import SiteManagerSidebar from "./SideBar";
 import { useEffect } from "react";
 
 const DashBoardLayout = () => {
+  const location = useLocation();
 
   //Toaster
   useEffect(() => {
@@ -34,7 +35,7 @@ const DashBoardLayout = () => {
 
         {/* Page Content Area */}
         <div className="p-6 bg-gray-100 flex-1 overflow-auto">
-          <Outlet/>
+          <Outlet key={location.pathname}/>
         </div>
       </div>
     </div>
