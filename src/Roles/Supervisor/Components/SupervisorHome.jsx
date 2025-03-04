@@ -5,7 +5,7 @@ const SuervisorHome = () => {
   console.log("SuervisorHome of Supervisor");
   return (
     <>
-    <h1>SuervisorHome of Supervisor</h1>
+    <h1>Suervisor Home</h1>
     </>
   )
 }

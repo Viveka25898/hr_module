@@ -1,10 +1,16 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css";
+import { submitRequest } from "./manpowerSlice"; // Make sure this exists!
 
 const ManpowerRequestForm = () => {
+  const dispatch = useDispatch();
+
+  // Assume remaining budget is 20000 (since backend API is not ready)
+  const remainingBudget = 20000;
+
   // State Management
   const [formData, setFormData] = useState({
     staffType: "",
@@ -13,56 +19,101 @@ const ManpowerRequestForm = () => {
     department: "",
     budget: "",
     location: "",
+    isUnbudgeted: false, // Track if request is unbudgeted
   });
 
   const [errors, setErrors] = useState({});
 
-  //Toaster Code
-  const showToast = () => {
+  //***************************Toast Code*****************************************/
+  const showToast=()=>{
     toast.success("Manpower Request Submitted Successfully! 🚀", {
-      position: "top-right",
-      autoClose: 3000, // Closes after 3 sec
+      position: "top-right"
     });
-  };
 
-  //Forcefully Render The Component
-  const location = useLocation();
+  }
 
-  useEffect(() => {
-    console.log("Manpower Request Form Mounted/Re-rendered");
-  }, [location.pathname]); 
 
-  // Handle Input Changes
+
+  //  Handle Input Change
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" }); // Clear errors when user types
+    const { name, value } = e.target;
+    let updatedFormData = { ...formData, [name]: value };
+
+    //  Budget Validation: If entered budget is greater than remaining budget, mark as Unbudgeted
+    if (name === "budget") {
+      const enteredBudget = parseInt(value) || 0;
+      updatedFormData.isUnbudgeted = enteredBudget > remainingBudget;
+    }
+
+    setFormData(updatedFormData);
+    setErrors({ ...errors, [name]: "" }); // Clear validation errors
   };
 
-  // Form Validation
+  //  Form Validation
   const validateForm = () => {
     let newErrors = {};
     Object.keys(formData).forEach((key) => {
-      if (!formData[key]) newErrors[key] = "This field is required";
+      if (!formData[key] && key !== "isUnbudgeted") newErrors[key] = "This field is required";
     });
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handle Form Submission
+  //  Handle Form Submission
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (validateForm()) {
+  //     toast.success("Manpower Request Submitted Successfully! 🚀", {
+  //       position: "top-right",
+  //       autoClose: 3000,
+  //     });
+
+  //     //  Save request in Redux store
+  //     dispatch(submitRequest(formData));
+
+  //     //  Store request in Local Storage
+  //     const existingRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
+  //     const updatedRequests = [...existingRequests, formData];
+  //     localStorage.setItem("manpowerRequests", JSON.stringify(updatedRequests));
+
+  //     //  Clear Form Fields After Submission
+  //     setFormData({
+  //       staffType: "",
+  //       skill: "",
+  //       grade: "",
+  //       department: "",
+  //       budget: "",
+  //       location: "",
+  //       isUnbudgeted: false, // Reset budget state
+  //     });
+  //   }
+  // };
+
+
+  //***********************************Handle Form Submit Logic ***********************************************************
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form Submitted:", formData);
-      // alert("Manpower Request Submitted Successfully!");
+      // Check if the request is Unbudgeted
+      const isUnBudgeted = parseInt(formData.budget) > remainingBudget;
+  
+      // Add the request with status & budget flag
+      const newRequest = { 
+        ...formData, 
+        isUnBudgeted, 
+        supervisorStatus: "Pending" 
+      };
+  
+      // Save to localStorage
+      const existingRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
+      existingRequests.push(newRequest);
+      localStorage.setItem("manpowerRequests", JSON.stringify(existingRequests));
+  
+      // Show Toaster
       showToast();
-      // Get existing requests from localStorage or initialize an empty array
-    const existingRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
-
-    // Add new request to the array
-    const updatedRequests = [...existingRequests, formData];
-
-    // Store in localStorage
-    localStorage.setItem("manpowerRequests", JSON.stringify(updatedRequests));
+      
+      // Reset Form Fields
       setFormData({
         staffType: "",
         skill: "",
@@ -73,6 +124,7 @@ const ManpowerRequestForm = () => {
       });
     }
   };
+  
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen flex justify-center items-center">
@@ -80,25 +132,20 @@ const ManpowerRequestForm = () => {
         <h2 className="text-2xl font-semibold mb-4 text-center font-mulish">Manpower Request Form</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           
-          {/* Staff Type */}
+          {/* ✅ Staff Type */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish">Staff Type</label>
-            <select
-              name="staffType"
-              value={formData.staffType}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" className="font-mulish" >Select Staff Type</option>
-              <option value="Permanent" className="font-mulish">Permanent</option>
-              <option value="Contract" className="font-mulish">Contract</option>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Staff Type</label>
+            <select name="staffType" value={formData.staffType} onChange={handleChange} className="w-full p-2 border rounded-md">
+              <option value="">Select Staff Type</option>
+              <option value="Permanent">Permanent</option>
+              <option value="Contract">Contract</option>
             </select>
             {errors.staffType && <p className="text-red-500 text-sm">{errors.staffType}</p>}
           </div>
 
-          {/* Skill */}
+          {/* ✅ Skill */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish">Skill</label>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Skill</label>
             <input
               type="text"
               name="skill"
@@ -110,41 +157,31 @@ const ManpowerRequestForm = () => {
             {errors.skill && <p className="text-red-500 text-sm">{errors.skill}</p>}
           </div>
 
-          {/* Grade */}
+          {/* ✅ Grade */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish">Grade</label>
-            <select
-              name="grade"
-              value={formData.grade}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" className="font-mulish">Select Grade</option>
-              <option value="Grade A" className="font-mulish">Grade A</option>
-              <option value="Grade B" className="font-mulish">Grade B</option>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Grade</label>
+            <select name="grade" value={formData.grade} onChange={handleChange} className="w-full p-2 border rounded-md">
+              <option value="">Select Grade</option>
+              <option value="Grade A">Grade A</option>
+              <option value="Grade B">Grade B</option>
             </select>
             {errors.grade && <p className="text-red-500 text-sm">{errors.grade}</p>}
           </div>
 
-          {/* Department */}
+          {/* ✅ Department */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish" >Department</label>
-            <select
-              name="department"
-              value={formData.department}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="" className="font-mulish">Select Department</option>
-              <option value="HR" className="font-mulish">HR</option>
-              <option value="Finance" className="font-mulish">Finance</option>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Department</label>
+            <select name="department" value={formData.department} onChange={handleChange} className="w-full p-2 border rounded-md">
+              <option value="">Select Department</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
             </select>
             {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
           </div>
 
-          {/* Budget */}
+          {/* ✅ Budget with Validation */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish">Budget</label>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Budget</label>
             <input
               type="number"
               name="budget"
@@ -154,11 +191,14 @@ const ManpowerRequestForm = () => {
               placeholder="Enter budget"
             />
             {errors.budget && <p className="text-red-500 text-sm">{errors.budget}</p>}
+
+            {/* ✅ Show Warning for Unbudgeted Requests */}
+            {formData.isUnbudgeted && <p className="text-red-600 text-sm mt-1">This is an Unbudgeted Request</p>}
           </div>
 
-          {/* Location */}
+          {/* ✅ Location */}
           <div>
-            <label className="block text-gray-700 text-sm font-bold mb-1 font-mulish">Location</label>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Location</label>
             <input
               type="text"
               name="location"
@@ -170,10 +210,12 @@ const ManpowerRequestForm = () => {
             {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
           </div>
 
-          {/* Submit Button */}
+          {/* ✅ Submit Button */}
           <button
             type="submit"
-            className="w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition font-mulish"
+            className={`w-full px-4 py-2 rounded-md transition ${
+              formData.isUnbudgeted ? "bg-red-600 hover:bg-red-700" : "bg-green-600 hover:bg-green-700"
+            } text-white`}
           >
             Submit to Supervisor
           </button>
