@@ -1,69 +1,98 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+/* eslint-disable no-unused-vars */
+import { useEffect, useState } from "react";
+import { useDispatch,useSelector } from "react-redux";
+import { setSelectedSite } from "../../../Features/Requisition-Manpower/Components/siteSlice"; 
 import { useNavigate } from "react-router-dom";
 import { logout } from "../../../Auth/authSlice";
 import { toast } from "react-toastify";
-import ProfileImage from "../../../Auth/assets/profile-picture.jpg"
+import ProfileImage from "../../../Auth/assets/profile-picture.jpg";
 
 const SiteManagerNavbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [site, setSite] = useState("");
 
-  const navigate=useNavigate()
-  const dispatch=useDispatch()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const selectedSite = useSelector((state) => state.site.selectedSite || "Select the Site");
 
+  //Sync Local Site When Store Update
+  useEffect(()=>{
+    setSite(selectedSite)
+  },[selectedSite])
 
   // ****************************Logout Handle Submit********************
-  const handleLogout=()=>{
+  const handleLogout = () => {
     dispatch(logout()); // Clear Redux state
     navigate("/login"); // Redirect to login page
-           toast.success("Logout Successfully! 🚀", {
-                position: "top-right",
-                autoClose: 3000, // Closes after 3 sec
-              });
-          navigate("/")
+    toast.success("Logout Successfully! 🚀", {
+      position: "top-right",
+      autoClose: 3000, // Closes after 3 sec
+    });
+    navigate("/");
+  };
 
-  }
+  // ********************************Site Selection***************************
+  const handleSelectSite = (e) => {
+   const newSite=e.target.value
+   console.log(newSite);
+   setSite(newSite)//Update Local State
+   dispatch(setSelectedSite(newSite))//Dispath to Store
+   localStorage.setItem("selectedSite",newSite)
+  };
 
-
+  console.log("Site Selected:-", site);
 
   return (
-    <nav className="bg-green-600 text-white h-14 flex items-center justify-between px-4 md:px-8 shadow-md ">
-    
-      {/* Left: Role Name */}
-      <div className="w-1/3"></div>
+    <nav className="bg-green-600 text-white h-14 flex items-center justify-between px-4 md:px-8 shadow-md">
+      
+      {/* Left: Site Selection Dropdown */}
+      <div className="w-1/3 flex items-center">
+        <select
+          name="site"
+          value={site}
+          onChange={handleSelectSite}
+          className="p-2 rounded-md bg-green-800 text-white w-52"
+        >
+          <option value="">Select Site</option>
+          <option value="Site Pune">Site Pune</option>
+          <option value="Site Mumbai">Site Mumbai</option>
+          <option value="Site C">Site C</option>
+          <option value="Site D">Site D</option>
+        </select>
+      </div>
 
-      {/* Center: Site Name & Location (Hidden on very small screens) */}
+      {/* Center: Site Name & Location */}
       <div className="hidden sm:flex flex-col items-center text-center">
-            <span className="text-base font-medium">Site Name:- ABC Industrial Park</span>
-            <span className="text-xs">Location:- Pune, India</span>
+        <span className="text-base font-medium">Site Name: {selectedSite}</span>
       </div>
 
       {/* Right: Profile Image + Dropdown */}
-      <div className="relative">
-        <div
-          className="flex items-center cursor-pointer"
-          onClick={() => setDropdownOpen(!dropdownOpen)}
-        >
-                <img
-                    src={ProfileImage} // Replace with actual image path
-                    alt="Profile"
-                    className="w-9 h-9 rounded-full border-2 border-white"
-                />
-          
-        </div>
+      <div className="w-1/3 flex justify-end">
+        <div className="relative">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+            <img
+              src={ProfileImage} // Replace with actual image path
+              alt="Profile"
+              className="w-9 h-9 rounded-full border-2 border-white"
+            />
+          </div>
 
-
-
-        {/* Dropdown Menu */}
-        {dropdownOpen && (
+          {/* Dropdown Menu */}
+          {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-40 bg-white text-black shadow-lg rounded-md">
-                    <ul className="py-1">
-                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li>
-                            <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Settings</li>
-                            <li className="px-4 py-2 hover:bg-red-500  cursor-pointer" onClick={handleLogout}>Logout</li>
-                    </ul>
+              <ul className="py-1">
+                <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Profile</li>
+                <li className="px-4 py-2 hover:bg-gray-200 cursor-pointer">Settings</li>
+                <li className="px-4 py-2 hover:bg-red-500 cursor-pointer" onClick={handleLogout}>
+                  Logout
+                </li>
+              </ul>
             </div>
-        )}
+          )}
+        </div>
       </div>
     </nav>
   );

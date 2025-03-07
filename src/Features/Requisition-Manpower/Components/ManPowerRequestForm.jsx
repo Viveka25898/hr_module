@@ -1,18 +1,24 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { submitRequest } from "./manpowerSlice"; // Make sure this exists!
 
 const ManpowerRequestForm = () => {
-  const dispatch = useDispatch();
 
-  // Assume remaining budget is 20000 (since backend API is not ready)
+
+  // *******************************Assume remaining budget is 20000 (since backend API is not ready)********************************
   const remainingBudget = 20000;
-
-  // State Management
+    
+  // Get the selected site from Redux (Provide a default value to prevent undefined errors)
+  const selectedSite = useSelector((state) => state.site.selectedSite || "Select a Site");
+  console.log("Manpower Request:-",selectedSite);
+  //*************Taking Site Manager Username from Store********************* */
+  const managerName=useSelector((state)=>state.auth.user)
+  console.log(managerName);
+    // State Management
   const [formData, setFormData] = useState({
+    siteName:selectedSite,
     staffType: "",
     skill: "",
     grade: "",
@@ -24,6 +30,15 @@ const ManpowerRequestForm = () => {
 
   const [errors, setErrors] = useState({});
 
+  // *********************************Update Sitename whenever selected site name changes************************
+  useEffect(() => {
+    if (selectedSite) {
+      setFormData((prev) => ({
+        ...prev,
+        siteName: selectedSite,
+      }));
+    }
+  }, [selectedSite]);
   //***************************Toast Code*****************************************/
   const showToast=()=>{
     toast.success("Manpower Request Submitted Successfully! 🚀", {
@@ -91,7 +106,7 @@ const ManpowerRequestForm = () => {
 
 
   //***********************************Handle Form Submit Logic ***********************************************************
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -102,7 +117,9 @@ const ManpowerRequestForm = () => {
       const newRequest = { 
         ...formData, 
         isUnBudgeted, 
-        supervisorStatus: "Pending" 
+        supervisorStatus: "Pending" ,
+        date: new Date().toISOString(),// Store submission date
+        managerName  //Storing Manager Name to the Local Storage       
       };
   
       // Save to localStorage
@@ -114,7 +131,9 @@ const ManpowerRequestForm = () => {
       showToast();
       
       // Reset Form Fields
+      console.log("Form Data",formData);
       setFormData({
+        siteName: selectedSite,
         staffType: "",
         skill: "",
         grade: "",
@@ -127,12 +146,21 @@ const ManpowerRequestForm = () => {
   
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
+    <div className="p-6 bg-gray-100 w-full min-h-screen flex justify-center items-center">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl">
         <h2 className="text-2xl font-semibold mb-4 text-center font-mulish">Manpower Request Form</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          
-          {/* ✅ Staff Type */}
+        
+           <div>
+            <label className="block text-gray-700 text-sm font-bold mb-1">Site Name</label>
+            <input
+              type="text"
+              name="siteName"
+              value={formData.siteName}
+              readOnly // Prevent manual changes
+              className="w-full p-2 border rounded-md bg-gray-200 cursor-not-allowed"
+            />
+          </div> 
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Staff Type</label>
             <select name="staffType" value={formData.staffType} onChange={handleChange} className="w-full p-2 border rounded-md">
@@ -143,7 +171,7 @@ const ManpowerRequestForm = () => {
             {errors.staffType && <p className="text-red-500 text-sm">{errors.staffType}</p>}
           </div>
 
-          {/* ✅ Skill */}
+          {/*  Skill */}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Skill</label>
             <input
@@ -157,7 +185,7 @@ const ManpowerRequestForm = () => {
             {errors.skill && <p className="text-red-500 text-sm">{errors.skill}</p>}
           </div>
 
-          {/* ✅ Grade */}
+          {/*  Grade */}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Grade</label>
             <select name="grade" value={formData.grade} onChange={handleChange} className="w-full p-2 border rounded-md">
@@ -168,7 +196,7 @@ const ManpowerRequestForm = () => {
             {errors.grade && <p className="text-red-500 text-sm">{errors.grade}</p>}
           </div>
 
-          {/* ✅ Department */}
+          {/*  Department */}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Department</label>
             <select name="department" value={formData.department} onChange={handleChange} className="w-full p-2 border rounded-md">
@@ -179,7 +207,7 @@ const ManpowerRequestForm = () => {
             {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
           </div>
 
-          {/* ✅ Budget with Validation */}
+          {/*  Budget with Validation */}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Budget</label>
             <input
@@ -192,11 +220,11 @@ const ManpowerRequestForm = () => {
             />
             {errors.budget && <p className="text-red-500 text-sm">{errors.budget}</p>}
 
-            {/* ✅ Show Warning for Unbudgeted Requests */}
+            {/*  Show Warning for Unbudgeted Requests */}
             {formData.isUnbudgeted && <p className="text-red-600 text-sm mt-1">This is an Unbudgeted Request</p>}
           </div>
 
-          {/* ✅ Location */}
+          {/*  Location */}
           <div>
             <label className="block text-gray-700 text-sm font-bold mb-1">Location</label>
             <input
@@ -210,7 +238,7 @@ const ManpowerRequestForm = () => {
             {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
           </div>
 
-          {/* ✅ Submit Button */}
+          {/*  Submit Button */}
           <button
             type="submit"
             className={`w-full px-4 py-2 rounded-md transition ${

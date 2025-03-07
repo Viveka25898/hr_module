@@ -29,7 +29,7 @@ const SiteManagerSidebar = () => {
         </div>
 
         {/* Sidebar Menu */}
-        <ul className="mt-6">
+        <ul className="mt-2">
           <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
           <NavLink to="/dashboard/site-manager">
 
@@ -41,7 +41,7 @@ const SiteManagerSidebar = () => {
           <hr className="border-white mx-4" />
 
           {/* Requisition Request with Dropdown */}
-          <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
+          <li className="px-6 py-1 hover:bg-green-600 cursor-pointer text-sm">
             <NavLink to="/dashboard/site-manager/my-requests">My Requests</NavLink>
           </li>
           <hr className="border-white mx-4" />
