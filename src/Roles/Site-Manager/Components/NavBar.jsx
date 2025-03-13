@@ -63,7 +63,7 @@ const SiteManagerNavbar = () => {
 
       {/* Center: Site Name & Location */}
       <div className="hidden sm:flex flex-col items-center text-center">
-        <span className="text-base font-medium">Site Name: {selectedSite}</span>
+        <span className="text-base font-medium">Site Name:- {selectedSite}</span>
       </div>
 
       {/* Right: Profile Image + Dropdown */}

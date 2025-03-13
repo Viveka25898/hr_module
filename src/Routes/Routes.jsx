@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux"
 import SupervisorRequests from "../Roles/Supervisor/Components/SupervisorsRequest"
 import MyRequests from "../Features/Requisition-Manpower/Components/MyRequests"
 import DashBoardLayout from "../Roles/Site-Manager/Components/DashBoardLayout"
+import BenchStaffAvalability from "../Features/Requisition-Manpower/Components/BenchStaffAvalability"
 
 
 
@@ -56,7 +57,8 @@ import DashBoardLayout from "../Roles/Site-Manager/Components/DashBoardLayout"
       children: [
         { index: true, element: <Home /> }, // Default Page
         { path: "manpower-request", element: <ManpowerRequestForm /> },
-        { path: "my-requests", element: <MyRequests /> }
+        { path: "my-requests", element: <MyRequests /> },
+        {path:"bench-staff/:siteName", element:<BenchStaffAvalability/>},
       ],
       
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes

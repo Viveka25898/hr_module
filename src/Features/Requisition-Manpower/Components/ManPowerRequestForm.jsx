@@ -115,6 +115,7 @@ const ManpowerRequestForm = () => {
   
       // Add the request with status & budget flag
       const newRequest = { 
+        id: Date.now().toString(),
         ...formData, 
         isUnBudgeted, 
         supervisorStatus: "Pending" ,

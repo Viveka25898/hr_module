@@ -1,24 +1,48 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
+import { FaEye } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyRequests = () => {
   const [requests, setRequests] = useState([]);
-  const [refreshKey, setRefreshKey] = useState(0); // 🔄 Refresh key to trigger updates
-  
-  // Fetching Data From Local Storage
+  const [refreshKey, setRefreshKey] = useState(0);
+  const navigate = useNavigate();
+  // Function to fetch and sort requests
+
   const fetchRequests = () => {
-    const storedRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
-    setRequests(storedRequests);
+              const storedRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
+            
+              // Sorting Order
+              const statusOrder = {
+                "Pending": 1, // Highest priority
+                "Submitted": 2, // Below Pending
+                "Accepted": 3, // Below Submitted
+                "Rejected": 4 // Lowest priority (at bottom)
+              };
+            
+              const sortedRequests = storedRequests.sort((a, b) => {
+                // Compare Supervisor Status first
+                const supervisorComparison = (statusOrder[a.supervisorStatus] || 5) - (statusOrder[b.supervisorStatus] || 5);
+                if (supervisorComparison !== 0) return supervisorComparison;
+            
+                // If Supervisor Status is the same, compare Approver Status
+                return (statusOrder[a.approverStatus] || 5) - (statusOrder[b.approverStatus] || 5);
+              });
+            
+              setRequests(sortedRequests);
   };
+  
+
 
   useEffect(() => {
-    fetchRequests()
-  }, [refreshKey]); 
+    fetchRequests();
+  }, [refreshKey]);
 
+  // Listen for localStorage changes and refresh the table dynamically
   useEffect(() => {
     const handleStorageChange = (event) => {
       if (event.key === "manpowerRequests") {
-        setRefreshKey((prev) => prev + 1); // Increment refresh key to trigger update
+        setRefreshKey((prev) => prev + 1);
       }
     };
 
@@ -41,20 +65,49 @@ const MyRequests = () => {
               <th className="p-2 border">Requested Manpower</th>
               <th className="p-2 border">Supervisor Approval</th>
               <th className="p-2 border">Approver Approval</th>
+              <th className="p-2 border">Bench Staff</th>
             </tr>
           </thead>
           <tbody>
             {requests.map((req, index) => (
               <tr key={index} className="border">
                 {/* Format date (Default to "N/A" if missing) */}
-                <td className="p-2 border">{req.date ? new Date(req.date).toLocaleDateString("en-GB") : "N/A"}</td>  
+                <td className="p-2 border">{req.date ? new Date(req.date).toLocaleDateString("en-GB") : "N/A"}</td>
                 <td className="p-2 border">{req.siteName || "N/A"}</td>
                 <td className="p-2 border">{req.staffType}</td>
-                <td className={`p-2 border font-bold ${req.supervisorStatus === "Rejected" ? "text-red-500" : req.supervisorStatus === "Accepted" ? "text-green-500" : "text-yellow-500"}`}>
+                <td
+                  className={`p-2 border font-bold ${
+                    req.supervisorStatus === "Rejected"
+                      ? "text-red-500"
+                      : req.supervisorStatus === "Accepted"
+                      ? "text-green-500"
+                      : "text-yellow-500"
+                  }`}
+                >
                   {req.supervisorStatus || "Pending"}
                 </td>
-                <td className={`p-2 border font-bold ${req.approverStatus === "Rejected" ? "text-red-500" : req.approverStatus === "Accepted" ? "text-green-500" : "text-yellow-500"}`}>
+                <td
+                  className={`p-2 border font-bold ${
+                    req.approverStatus === "Rejected"
+                      ? "text-red-500"
+                      : req.approverStatus === "Accepted"
+                      ? "text-green-500"
+                      : "text-yellow-500"
+                  }`}
+                >
                   {req.approverStatus || "Pending"}
+                </td>
+                {/* Show Bench Staff Column */}
+                <td className="p-2 border text-center">
+                  {req.supervisorStatus === "Submitted" ? (
+                    
+                    <FaEye className="text-blue-600 cursor-pointer text-lg hover:text-blue-800"
+                    onClick={() => navigate(`/dashboard/site-manager/bench-staff/${encodeURIComponent(req.siteName)}`)}
+                     />
+                    
+                  ) : (
+                    <FaEye className="text-gray-400 cursor-not-allowed text-lg" />
+                  )}
                 </td>
               </tr>
             ))}
@@ -66,4 +119,3 @@ const MyRequests = () => {
 };
 
 export default MyRequests;
-
