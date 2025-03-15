@@ -45,28 +45,41 @@ const SiteManagerSidebar = () => {
             <NavLink to="/dashboard/site-manager/my-requests">My Requests</NavLink>
           </li>
           <hr className="border-white mx-4" />
-          <li
-  className="px-6 text-sm py-2 flex justify-between items-center hover:bg-green-600 cursor-pointer"
-  onClick={() => setRequisitionOpen(!requisitionOpen)}
->
-  <NavLink to="/dashboard/site-manager">
-    Requisition Request
-  </NavLink>
 
-  {requisitionOpen ? <FaChevronUp size={14} /> : <FaChevronDown size={14} />}
-</li>
+          {/* My Staff  */}
+          <li className="px-6 py-1 hover:bg-green-600 cursor-pointer text-sm">
+            <NavLink to="/dashboard/site-manager/my-staff">My Satff</NavLink>
+          </li>
+          <hr className="border-white mx-4" />
+
+          {/* **********Requests from Another Site Mnager************* */}
+          <li className="px-6 py-1 hover:bg-green-600 cursor-pointer text-sm">
+            <NavLink to="/dashboard/site-manager/requests">Requests</NavLink>
+          </li>
+          <hr className="border-white mx-4" />
+
+          <li
+            className="px-6 text-sm py-2 flex justify-between items-center hover:bg-green-600 cursor-pointer"
+            onClick={() => setRequisitionOpen(!requisitionOpen)}
+          >
+            <NavLink to="/dashboard/site-manager">
+              Requisition Request
+            </NavLink>
+
+              {requisitionOpen ? <FaChevronUp size={14} /> : <FaChevronDown size={14} />}
+            </li>
 
 {/* Sub-option: Manpower Request */}
-{requisitionOpen && (
-  <ul className="pl-8 bg-green-800">
-    <li>
-      <NavLink to="/dashboard/site-manager/manpower-request">
-        Manpower Request
-      </NavLink>
-    </li>
-          
-            </ul>
-          )}
+              {requisitionOpen && (
+                <ul className="pl-8 bg-green-800">
+                  <li>
+                    <NavLink to="/dashboard/site-manager/manpower-request">
+                      Manpower Request
+                    </NavLink>
+                  </li>
+                        
+                          </ul>
+                        )}
         </ul>
       </div>
     </>

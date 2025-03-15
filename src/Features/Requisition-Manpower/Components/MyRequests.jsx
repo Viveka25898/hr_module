@@ -7,11 +7,22 @@ const MyRequests = () => {
   const [requests, setRequests] = useState([]);
   const [refreshKey, setRefreshKey] = useState(0);
   const navigate = useNavigate();
+
+
+   //***************** Get the logged-in user's username from localStorage***************************
+   const loggedInUser = JSON.parse(localStorage.getItem("userData")) || {};
+  //  console.log("Logged In User Data:", loggedInUser);
+   const loggedInUsername = loggedInUser.username || "";
   // Function to fetch and sort requests
 
   const fetchRequests = () => {
               const storedRequests = JSON.parse(localStorage.getItem("manpowerRequests")) || [];
+              // console.log("Stored Requests:-",storedRequests);
             
+              //Filter The Requests To Show the Requests those submitted by Logged In Manager
+              const filteredRequest=storedRequests.filter(req => req.managerUsername === loggedInUsername)
+              // console.log("Filtered Requests for", loggedInUsername, ":", filteredRequest); 
+
               // Sorting Order
               const statusOrder = {
                 "Pending": 1, // Highest priority
@@ -20,7 +31,7 @@ const MyRequests = () => {
                 "Rejected": 4 // Lowest priority (at bottom)
               };
             
-              const sortedRequests = storedRequests.sort((a, b) => {
+              const sortedRequests = filteredRequest.sort((a, b) => {
                 // Compare Supervisor Status first
                 const supervisorComparison = (statusOrder[a.supervisorStatus] || 5) - (statusOrder[b.supervisorStatus] || 5);
                 if (supervisorComparison !== 0) return supervisorComparison;
@@ -32,7 +43,7 @@ const MyRequests = () => {
               setRequests(sortedRequests);
   };
   
-
+// console.log("Requests:-",requests);
 
   useEffect(() => {
     fetchRequests();

@@ -5,14 +5,13 @@
     { "name": "Priya Nair", "age": 32, "address": "Delhi", "currentSite": "Site D", "distance": 7 },
     { "name": "Vikram Desai", "age": 29, "address": "Pune", "currentSite": "Site A", "distance": 6 },
     { "name": "Rajesh Gupta", "age": 35, "address": "Mumbai", "currentSite": "Site C", "distance": 14 },
-    { "name": "Neha Agarwal", "age": 27, "address": "Delhi", "currentSite": "Site D", "distance": 5 },
+    { "name": "Neha Agarwal", "age": 27, "address": "Ahmedabad", "currentSite": "Site D", "distance": 5 },
     { "name": "Sandeep Malhotra", "age": 33, "address": "Pune", "currentSite": "Site B", "distance": 11 },
     { "name": "Anita Joshi", "age": 26, "address": "Mumbai", "currentSite": "Site C", "distance": 9 },
     { "name": "Manoj Kumar", "age": 31, "address": "Pune", "currentSite": "Site A", "distance": 13 },
-    { "name": "Kiran Mehta", "age": 29, "address": "Delhi", "currentSite": "Site D", "distance": 15 },
+    { "name": "Kiran Mehta", "age": 29, "address": "Ahmedabad", "currentSite": "Site D", "distance": 15 },
     { "name": "Sunil Chauhan", "age": 34, "address": "Mumbai", "currentSite": "Site C", "distance": 7 },
     { "name": "Deepa Kapoor", "age": 28, "address": "Pune", "currentSite": "Site B", "distance": 6 },
     { "name": "Ravi Shankar", "age": 32, "address": "Delhi", "currentSite": "Site D", "distance": 9 },
     { "name": "Sonia Gill", "age": 30, "address": "Mumbai", "currentSite": "Site C", "distance": 14 }
   ]
-  

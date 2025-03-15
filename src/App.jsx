@@ -10,6 +10,14 @@ function App() {
 
   useEffect(() => {
     // Restore login session on refresh
+    localStorage.setItem(
+      "siteManagers",
+      JSON.stringify({
+        managerA: ["Site A", "Site B","Site C","Site D"],
+        managerB: ["Site E", "Site F","Site G","Site H"],
+      })
+    );
+    
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       dispatch(login(storedUser)); // Fix: Rehydrate user state in Redux

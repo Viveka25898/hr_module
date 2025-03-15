@@ -9,13 +9,13 @@ const ManpowerRequestForm = () => {
 
   // *******************************Assume remaining budget is 20000 (since backend API is not ready)********************************
   const remainingBudget = 20000;
-    
   // Get the selected site from Redux (Provide a default value to prevent undefined errors)
   const selectedSite = useSelector((state) => state.site.selectedSite || "Select a Site");
-  console.log("Manpower Request:-",selectedSite);
   //*************Taking Site Manager Username from Store********************* */
-  const managerName=useSelector((state)=>state.auth.user)
-  console.log(managerName);
+  // *********************************Get the Login User Data from Local Storage*************************
+  const loggedInUser=JSON.parse(localStorage.getItem("userData")) || {}
+  const loggedInUserName=loggedInUser.username || "Unknown Manager"
+  console.log(loggedInUserName);
     // State Management
   const [formData, setFormData] = useState({
     siteName:selectedSite,
@@ -120,7 +120,7 @@ const ManpowerRequestForm = () => {
         isUnBudgeted, 
         supervisorStatus: "Pending" ,
         date: new Date().toISOString(),// Store submission date
-        managerName  //Storing Manager Name to the Local Storage       
+        managerUsername: loggedInUserName  //Storing Manager Name to the Local Storage       
       };
   
       // Save to localStorage

@@ -19,6 +19,8 @@ import SupervisorRequests from "../Roles/Supervisor/Components/SupervisorsReques
 import MyRequests from "../Features/Requisition-Manpower/Components/MyRequests"
 import DashBoardLayout from "../Roles/Site-Manager/Components/DashBoardLayout"
 import BenchStaffAvalability from "../Features/Requisition-Manpower/Components/BenchStaffAvalability"
+import MyStaff from "../Features/Requisition-Manpower/Components/MyStaff"
+import Requests from "../Features/Requisition-Manpower/Components/Requests"
 
 
 
@@ -57,6 +59,8 @@ import BenchStaffAvalability from "../Features/Requisition-Manpower/Components/B
       children: [
         { index: true, element: <Home /> }, // Default Page
         { path: "manpower-request", element: <ManpowerRequestForm /> },
+        { path: "my-staff", element: <MyStaff /> },
+        { path: "requests", element: <Requests /> },
         { path: "my-requests", element: <MyRequests /> },
         {path:"bench-staff/:siteName", element:<BenchStaffAvalability/>},
       ],

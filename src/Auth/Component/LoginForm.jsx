@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 ;import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react"
@@ -24,20 +25,71 @@ const LoginForm=(props)=>{
             alert("Please Select the Role!")
             return
           }
+          // Fetch assigned sites for this user
+              // const siteManagers = JSON.parse(localStorage.getItem("siteManagers")) || {};
+              // const assignedSites = siteManagers[username] || [];
+              // console.log(assignedSites);
 
-    // Save user data to localStorage
-    const userData = { username, role };
-    dispatch(login(userData));
-    localStorage.setItem("showLoginToast", "true");
+              //Another Way
+               // Dummy assigned sites for different Site Managers
+                  const siteManagerSites = {
+                    "A": ["Site Pune", "Site Mumbai"],
+                    "B": ["Site Delhi", "Site Ahmedabad"]
+                  };
+
+
+                  //  Dummy Bench Staff Assigned to Site Managers
+                  const benchStaff = [
+                    { name: "Amit Sharma", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
+                    { name: "Rahul Verma", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
+                    { name: "Sneha Patil", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
+                    { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site D", assignedManager: "B", distance: 7 },
+                    { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                    { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 },
+                    { name: "Amit Sharma2", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
+                    { name: "Rahul Verma2", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
+                    { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
+                    { name: "Priya Nair2", age: 32, address: "Delhi", currentSite: "Site D", assignedManager: "B", distance: 7 },
+                    { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                    { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
+                  ];
+
+                   // Store in Local Storage
+                    if (!localStorage.getItem("benchStaff")) {
+                      localStorage.setItem("benchStaff", JSON.stringify(benchStaff));
+                    }
+
+
+                  // const managerBenchStaff = {
+                  //   A: [
+                  //     { name: "Amit Sharma", age: 30, address: "Pune", assignedManager: "A" },
+                  //     { name: "Sneha Patil", age: 25, address: "Pune", assignedManager: "A" }
+                  //   ],
+                  //   B: [
+                  //     { name: "Rahul Verma", age: 28, address: "Delhi", assignedManager: "B" },
+                  //     { name: "Priya Nair", age: 32, address: "Ahmedabad", assignedManager: "B" }
+                  //   ]
+                  // };
+
+                  
+           // Save user data to localStorage
+              const userData = { username,
+                                 role,
+                                 assignedSites:siteManagerSites[username] || [],
+                                //  benchStaff:managerBenchStaff[username] || []  //This is aving Bench staff for this Manager
+                 };
+              dispatch(login(userData));
+              localStorage.setItem("userData",JSON.stringify(userData))
+              localStorage.setItem("showLoginToast", "true");
 
           //Routing on the basis of Role.
 
           //************************************For Site Managaer********************************************** */
-          if(role === "site-manager") navigate("/dashboard/site-manager")
-            // ****************************************For Supervisor***************************************
-            else if(role === "supervisor") navigate("/dashboard/supervisor")
-              //For Toaster
-              localStorage.setItem("showLoginToast", "true");
+              if(role === "site-manager") navigate("/dashboard/site-manager")
+                // ****************************************For Supervisor***************************************
+                else if(role === "supervisor") navigate("/dashboard/supervisor")
+                  //For Toaster
+                  localStorage.setItem("showLoginToast", "true");
 
   }
 
