@@ -39,44 +39,55 @@ const LoginForm=(props)=>{
 
 
                   //  Dummy Bench Staff Assigned to Site Managers
-                  const benchStaff = [
-                    { name: "Amit Sharma", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
-                    { name: "Rahul Verma", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
-                    { name: "Sneha Patil", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
-                    { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site D", assignedManager: "B", distance: 7 },
-                    { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
-                    { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 },
-                    { name: "Amit Sharma2", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
-                    { name: "Rahul Verma2", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
-                    { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
-                    { name: "Priya Nair2", age: 32, address: "Delhi", currentSite: "Site D", assignedManager: "B", distance: 7 },
-                    { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
-                    { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
-                  ];
+                  // const benchStaff = [
+                  //   { name: "Amit Sharma", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
+                  //   { name: "Rahul Verma", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
+                  //   { name: "Sneha Patil", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
+                  //   { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site D", assignedManager: "B", distance: 7 },
+                  //   { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                  //   { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 },
+                  //   { name: "Amit Sharma2", age: 30, address: "Pune", currentSite: "Site B", assignedManager: "A", distance: 8 },
+                  //   { name: "Rahul Verma2", age: 28, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 12 },
+                  //   { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 10 },
+                  //   { name: "Priya Nair2", age: 32, address: "Delhi", currentSite: "Site D", assignedManager: "B", distance: 7 },
+                  //   { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                  //   { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
+                  // ];
 
-                   // Store in Local Storage
-                    if (!localStorage.getItem("benchStaff")) {
-                      localStorage.setItem("benchStaff", JSON.stringify(benchStaff));
-                    }
+                  //  // Store in Local Storage
+                  //   if (!localStorage.getItem("benchStaff")) {
+                  //     localStorage.setItem("benchStaff", JSON.stringify(benchStaff));
+                  //   }
 
 
-                  // const managerBenchStaff = {
-                  //   A: [
-                  //     { name: "Amit Sharma", age: 30, address: "Pune", assignedManager: "A" },
-                  //     { name: "Sneha Patil", age: 25, address: "Pune", assignedManager: "A" }
-                  //   ],
-                  //   B: [
-                  //     { name: "Rahul Verma", age: 28, address: "Delhi", assignedManager: "B" },
-                  //     { name: "Priya Nair", age: 32, address: "Ahmedabad", assignedManager: "B" }
-                  //   ]
-                  // };
+                  const managerBenchStaff = {
+                    A: [
+                      { name: "Amit Sharma", age: 30, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
+                      { name: "Sneha Patil", age: 25, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
+                      { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                     { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "A", distance: 14 }
+                    ],
+                    B: [
+                      { name: "Rahul Verma", age: 28, address: "Delhi", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                      { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                      { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                     { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 6 },
+                     { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
+
+                    ]
+                  };
+
+                  //Store data in Local Storage
+                  if (!localStorage.getItem("benchStaff")) {
+                    localStorage.setItem("benchStaff", JSON.stringify(managerBenchStaff));
+                  }
 
                   
            // Save user data to localStorage
               const userData = { username,
                                  role,
                                  assignedSites:siteManagerSites[username] || [],
-                                //  benchStaff:managerBenchStaff[username] || []  //This is aving Bench staff for this Manager
+                                 benchStaff:managerBenchStaff[username] || []  //This is aving Bench staff for this Manager
                  };
               dispatch(login(userData));
               localStorage.setItem("userData",JSON.stringify(userData))

@@ -94,45 +94,64 @@
 /* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+
 const BenchStaffAvailability = () => {
   const { siteName } = useParams(); // Get siteName from URL
+  const cleanSiteName = decodeURIComponent(siteName.trim())
+    .replace("Site ", "")
+    .toLowerCase();
 
-  const cleanSiteName = decodeURIComponent(siteName.trim()).replace("Site ", "").toLowerCase();
-
-
+  //  State to store bench staff from LocalStorage
   const [benchStaffData, setBenchStaff] = useState([]);
-  // const[loggedInManager,setLoggedInManager]=useState("")
-  // const [filteredStaff, setFilteredStaff] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const loggedInManager = JSON.parse(localStorage.getItem("userData"))?.username?.trim() || "";
-  // Fetch Bench Staff Data from Local Storage
+  //  Get logged-in Manager Name
+  const loggedInManager =
+    JSON.parse(localStorage.getItem("userData"))?.username?.trim() || "";
+
+  // Fetch Bench Staff Data from Local Storage on Component Mount
+  // useEffect(() => {
+  //   const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || [];
+  //   console.log("📌 Stored Bench Staff Data:", storedStaff); // ✅ Debugging Step
+  //   setBenchStaff(storedStaff);
+  // }, []);
+
+
+  // ********************Another Way************************
   useEffect(() => {
-    const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || [];
-    setBenchStaff(storedStaff);
+    const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || {};
+  
+    // ✅ Convert object values (arrays) into a single array
+    const allStaff = Object.values(storedStaff).flat();
+  
+    setBenchStaff(allStaff);
   }, []);
-  const staffNotAssignedToManager = benchStaffData.filter(
-    (staff) => !staff.assignedManager.toLowerCase().includes(loggedInManager.toLowerCase())
-  );
-  console.log("Staff Not Assigned to Manager:-",staffNotAssignedToManager);
-  const staffMatchingSite = staffNotAssignedToManager.filter(
-    (staff) => cleanSiteName.toLowerCase().includes(staff.address.toLowerCase())
-  );
-  console.log("✅ Filtered Staff Matching Site:", staffMatchingSite);
-  //Filter Staff based on the Seleted Site Address.
-  const filteredStaff = benchStaffData
-  .filter((staff) => staff.assignedManager.trim().toLowerCase() !== loggedInManager.trim().toLowerCase())
-  .filter((staff) => staff.address.trim().toLowerCase() === cleanSiteName.trim().toLowerCase());
 
-console.log("✅ Final Filtered Staff:", filteredStaff);
-
-
-
-
+  // // ✅ Filter Staff Based on Address & Assigned Manager
+  // const filteredStaff = benchStaffData.filter((staff) => {
+  //   const staffAddress = staff.address.trim().toLowerCase();
+  //   const staffManager = staff.assignedManager?.trim().toLowerCase() || "";
   
+  //   return (
+  //     staffAddress === cleanSiteName && // ✅ Match site name
+  //     staffManager !== loggedInManager && // ✅ Exclude logged-in manager
+  //     staffManager !== "" // ✅ Ensure staff is assigned to someone
+  //   );
+  // });
+
+   // ✅ Filter Staff: Show only those NOT assigned to the logged-in manager
+   const filteredStaff = benchStaffData.filter(
+    (staff) => staff.assignedManager.trim().toLowerCase() !== loggedInManager.trim().toLowerCase() &&
+    cleanSiteName.toLowerCase().includes(staff.address.toLowerCase())
+
+  );
+
+  console.log("✅ Available Bench Staff (NOT Assigned to Manager)", filteredStaff);
   
-    
+
+  console.log("✅ Final Filtered Staff:", filteredStaff);
+
   // 🔹 Handle Select Staff (Open Confirmation Popup)
   const handleSelectStaff = (staff) => {
     setSelectedStaff(staff);
@@ -143,18 +162,22 @@ console.log("✅ Final Filtered Staff:", filteredStaff);
   const handleSendRequest = () => {
     if (selectedStaff) {
       const request = {
-        requestedBy: cleanSiteName, // Site making the request
+        requestedBy: loggedInManager, // 🔹 Store manager name
         requestedStaff: selectedStaff.name,
         assignedManager: selectedStaff.assignedManager,
         status: "Pending",
       };
 
-      // Get Existing Requests or Initialize Empty Array
-      const existingRequests = JSON.parse(localStorage.getItem("benchStaffRequests")) || [];
+      // ✅ Get Existing Requests or Initialize Empty Array
+      const existingRequests =
+        JSON.parse(localStorage.getItem("benchStaffRequests")) || [];
       existingRequests.push(request);
 
-      // Save Updated Requests in Local Storage
-      localStorage.setItem("benchStaffRequests", JSON.stringify(existingRequests));
+      // ✅ Save Updated Requests in Local Storage
+      localStorage.setItem(
+        "benchStaffRequests",
+        JSON.stringify(existingRequests)
+      );
 
       alert("Request Sent Successfully!");
       setIsPopupOpen(false); // Close Popup
@@ -209,12 +232,15 @@ console.log("✅ Final Filtered Staff:", filteredStaff);
       {isPopupOpen && selectedStaff && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
-            <h2 className="text-xl font-bold text-green-600 mb-4">Confirm Request</h2>
+            <h2 className="text-xl font-bold text-green-600 mb-4">
+              Confirm Request
+            </h2>
             <p className="text-gray-800 text-lg">
               Are you sure you want to request <b>{selectedStaff.name}</b>?
             </p>
             <p className="text-gray-700">
-              This staff is currently assigned under <b>{selectedStaff.assignedManager}</b>.
+              This staff is currently assigned under{" "}
+              <b>{selectedStaff.assignedManager}</b>.
             </p>
 
             <div className="mt-4 flex justify-end space-x-4">
@@ -239,3 +265,4 @@ console.log("✅ Final Filtered Staff:", filteredStaff);
 };
 
 export default BenchStaffAvailability;
+

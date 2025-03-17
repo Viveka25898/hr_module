@@ -24,17 +24,16 @@ const MyStaff = () => {
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (userData) {
-      setLoggedInManager(userData.username);
-      const allStaffForManager = JSON.parse(localStorage.getItem("benchStaff")) || [];
-
-      // 🔹 Filter Staff Assigned to the Logged-in Manager
-      const assignedStaff = allStaffForManager.filter(
-        (staff) => staff.assignedManager === userData.username
-      );
-
+      setLoggedInManager(userData.username); // Set logged-in manager
+  
+      const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || {};
+      
+      // 🔹 Ensure correct manager staff filtering
+      const assignedStaff = storedStaff[userData.username] || []; 
+  
       setAllStaff(assignedStaff);
     }
-  }, [loggedInManager]);
+  }, []); // ✅ No dependency on loggedInManager to prevent infinite loop
 
 console.log("All:-",allStaff);
   return (
