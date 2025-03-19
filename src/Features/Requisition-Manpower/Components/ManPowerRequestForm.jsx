@@ -15,7 +15,6 @@ const ManpowerRequestForm = () => {
   // *********************************Get the Login User Data from Local Storage*************************
   const loggedInUser=JSON.parse(localStorage.getItem("userData")) || {}
   const loggedInUserName=loggedInUser.username || "Unknown Manager"
-  console.log(loggedInUserName);
     // State Management
   const [formData, setFormData] = useState({
     siteName:selectedSite,

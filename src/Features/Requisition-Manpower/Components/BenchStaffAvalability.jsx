@@ -94,17 +94,25 @@
 /* eslint-disable no-unused-vars */
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loadRequests, sendRequest } from "./benchStaffSlice";
+import { toast } from "react-toastify";
 
 const BenchStaffAvailability = () => {
   const { siteName } = useParams(); // Get siteName from URL
   const cleanSiteName = decodeURIComponent(siteName.trim())
     .replace("Site ", "")
     .toLowerCase();
+    console.log("Clean Site Name",cleanSiteName);
+    const dispatch=useDispatch()
 
+    //Get All Existing Request from Redux
+    const existingRequest=useSelector((state)=>state.benchStaff.requests)
   //  State to store bench staff from LocalStorage
   const [benchStaffData, setBenchStaff] = useState([]);
   const [selectedStaff, setSelectedStaff] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [requestedStaff, setRequestedStaff] = useState(new Set()); // Store requested staff
 
   //  Get logged-in Manager Name
   const loggedInManager =
@@ -120,14 +128,16 @@ const BenchStaffAvailability = () => {
 
   // ********************Another Way************************
   useEffect(() => {
-    const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || {};
-  
-    // ✅ Convert object values (arrays) into a single array
-    const allStaff = Object.values(storedStaff).flat();
-  
-    setBenchStaff(allStaff);
+    const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || [];
+    setBenchStaff(storedStaff);
   }, []);
 
+  // Load Requests from Redux 
+  useEffect(()=>{
+    dispatch(loadRequests())
+  },[dispatch])
+ 
+  
   // // ✅ Filter Staff Based on Address & Assigned Manager
   // const filteredStaff = benchStaffData.filter((staff) => {
   //   const staffAddress = staff.address.trim().toLowerCase();
@@ -142,15 +152,18 @@ const BenchStaffAvailability = () => {
 
    // ✅ Filter Staff: Show only those NOT assigned to the logged-in manager
    const filteredStaff = benchStaffData.filter(
-    (staff) => staff.assignedManager.trim().toLowerCase() !== loggedInManager.trim().toLowerCase() &&
-    cleanSiteName.toLowerCase().includes(staff.address.toLowerCase())
-
+    (staff) => 
+      staff.manager.trim().toLowerCase() !== loggedInManager.trim().toLowerCase() &&
+      staff.address.toLowerCase() === cleanSiteName
   );
 
-  console.log("✅ Available Bench Staff (NOT Assigned to Manager)", filteredStaff);
-  
-
-  console.log("✅ Final Filtered Staff:", filteredStaff);
+  //Check if the Staff is Already Requested
+  useEffect(()=>{
+    const requestedSet=new Set(
+      existingRequest.filter((req)=>req.requestedBy===loggedInManager).map((req)=>req.requestedStaff)
+    );
+    setRequestedStaff(requestedSet)
+  },[existingRequest,loggedInManager])
 
   // 🔹 Handle Select Staff (Open Confirmation Popup)
   const handleSelectStaff = (staff) => {
@@ -160,28 +173,20 @@ const BenchStaffAvailability = () => {
 
   // 🔹 Handle Sending Request (Store in Local Storage)
   const handleSendRequest = () => {
-    if (selectedStaff) {
-      const request = {
-        requestedBy: loggedInManager, // 🔹 Store manager name
-        requestedStaff: selectedStaff.name,
-        assignedManager: selectedStaff.assignedManager,
-        status: "Pending",
-      };
-
-      // ✅ Get Existing Requests or Initialize Empty Array
-      const existingRequests =
-        JSON.parse(localStorage.getItem("benchStaffRequests")) || [];
-      existingRequests.push(request);
-
-      // ✅ Save Updated Requests in Local Storage
-      localStorage.setItem(
-        "benchStaffRequests",
-        JSON.stringify(existingRequests)
-      );
-
-      alert("Request Sent Successfully!");
-      setIsPopupOpen(false); // Close Popup
-    }
+   if(selectedStaff){
+    dispatch(
+      sendRequest({
+        id:Date.now(),
+        requestedBy:loggedInManager,
+        requestedStaff:selectedStaff.name,
+        manager:selectedStaff.manager,
+        status:"Pending"
+      })
+    )
+    setRequestedStaff((prev)=>new Set([...prev, selectedStaff.name]))
+    toast.success("Request Sent Successfully!  ✅")
+    setIsPopupOpen(false)
+   }
   };
 
   return (
@@ -212,15 +217,23 @@ const BenchStaffAvailability = () => {
                 <td className="p-2 border">{staff.age}</td>
                 <td className="p-2 border">{staff.address}</td>
                 <td className="p-2 border">{staff.currentSite}</td>
-                <td className="p-2 border">{staff.assignedManager}</td>
+                <td className="p-2 border">{staff.manager}</td>
                 <td className="p-2 border">{staff.distance} km</td>
                 <td className="p-2 border text-center">
-                  <button
+                 {
+                  requestedStaff.has(staff.name)?(
+                    <button className="bg-gray-400 text-white px-4 py-2 rounded-md cursor-not-allowed" disabled>
+                      Requested
+                    </button>
+                  ):(
+                    <button
                     className="bg-green-400 text-white px-4 py-2 rounded-md hover:bg-green-700"
                     onClick={() => handleSelectStaff(staff)}
                   >
                     Select
                   </button>
+                  )
+                 }
                 </td>
               </tr>
             ))}
@@ -240,7 +253,7 @@ const BenchStaffAvailability = () => {
             </p>
             <p className="text-gray-700">
               This staff is currently assigned under{" "}
-              <b>{selectedStaff.assignedManager}</b>.
+              <b>{selectedStaff.manager}</b>.
             </p>
 
             <div className="mt-4 flex justify-end space-x-4">

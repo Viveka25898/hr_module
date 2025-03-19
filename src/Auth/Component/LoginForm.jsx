@@ -60,22 +60,36 @@ const LoginForm=(props)=>{
                   //   }
 
 
-                  const managerBenchStaff = {
-                    A: [
-                      { name: "Amit Sharma", age: 30, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
-                      { name: "Sneha Patil", age: 25, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
-                      { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
-                     { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "A", distance: 14 }
-                    ],
-                    B: [
-                      { name: "Rahul Verma", age: 28, address: "Delhi", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                      { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                      { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                     { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 6 },
-                     { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
+                  // const managerBenchStaff = {
+                  //   A: [
+                  //     { name: "Amit Sharma", age: 30, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
+                  //     { name: "Sneha Patil", age: 25, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
+                  //     { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
+                  //    { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "A", distance: 14 }
+                  //   ],
+                  //   B: [
+                  //     { name: "Rahul Verma", age: 28, address: "Delhi", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                  //     { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                  //     { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 10 },
+                  //    { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 6 },
+                  //    { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
 
-                    ]
-                  };
+                  //   ]
+                  // };
+
+                 // Saving Data as an Arry of an Object.
+                  const managerBenchStaff = [
+                    { manager: "A", name: "Amit Sharma", age: 30, address: "Delhi", currentSite: "Site A", distance: 10 },
+                    { manager: "A", name: "Sneha Patil", age: 25, address: "Delhi", currentSite: "Site A", distance: 10 },
+                    { manager: "A", name: "Vikram Desai", age: 29, address: "Ahmedabad", currentSite: "Site A", distance: 6 },
+                    { manager: "A", name: "Rajesh Gupta", age: 35, address: "Ahmedabad", currentSite: "Site C", distance: 14 },
+                    
+                    { manager: "B", name: "Rahul Verma", age: 28, address: "Pune", currentSite: "Site A", distance: 10 },
+                    { manager: "B", name: "Priya Nair", age: 32, address: "Mumbai", currentSite: "Site A", distance: 10 },
+                    { manager: "B", name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", distance: 10 },
+                    { manager: "B", name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", distance: 6 },
+                    { manager: "B", name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", distance: 14 }
+                  ];
 
                   //Store data in Local Storage
                   if (!localStorage.getItem("benchStaff")) {

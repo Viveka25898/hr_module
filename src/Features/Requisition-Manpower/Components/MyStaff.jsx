@@ -26,10 +26,14 @@ const MyStaff = () => {
     if (userData) {
       setLoggedInManager(userData.username); // Set logged-in manager
   
+  
       const storedStaff = JSON.parse(localStorage.getItem("benchStaff")) || {};
+      console.log(storedStaff);
+
       
       // 🔹 Ensure correct manager staff filtering
-      const assignedStaff = storedStaff[userData.username] || []; 
+      const assignedStaff = storedStaff.filter(staff => staff.manager === userData.username); 
+      console.log("Assigned Staff:-",assignedStaff);
   
       setAllStaff(assignedStaff);
     }
