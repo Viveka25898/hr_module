@@ -59,24 +59,6 @@ const LoginForm=(props)=>{
                   //     localStorage.setItem("benchStaff", JSON.stringify(benchStaff));
                   //   }
 
-
-                  // const managerBenchStaff = {
-                  //   A: [
-                  //     { name: "Amit Sharma", age: 30, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
-                  //     { name: "Sneha Patil", age: 25, address: "Pune",currentSite: "Site A", assignedManager: "A", distance: 10 },
-                  //     { name: "Vikram Desai", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "A", distance: 6 },
-                  //    { name: "Rajesh Gupta", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "A", distance: 14 }
-                  //   ],
-                  //   B: [
-                  //     { name: "Rahul Verma", age: 28, address: "Delhi", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                  //     { name: "Priya Nair", age: 32, address: "Ahmedabad", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                  //     { name: "Sneha Patil2", age: 25, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 10 },
-                  //    { name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", assignedManager: "B", distance: 6 },
-                  //    { name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", assignedManager: "B", distance: 14 }
-
-                  //   ]
-                  // };
-
                  // Saving Data as an Arry of an Object.
                   const managerBenchStaff = [
                     { manager: "A", name: "Amit Sharma", age: 30, address: "Delhi", currentSite: "Site A", distance: 10 },
@@ -90,12 +72,21 @@ const LoginForm=(props)=>{
                     { manager: "B", name: "Vikram Desai2", age: 29, address: "Pune", currentSite: "Site A", distance: 6 },
                     { manager: "B", name: "Rajesh Gupta2", age: 35, address: "Mumbai", currentSite: "Site C", distance: 14 }
                   ];
-
+                  
                   //Store data in Local Storage
                   if (!localStorage.getItem("benchStaff")) {
                     localStorage.setItem("benchStaff", JSON.stringify(managerBenchStaff));
                   }
+                  const benchStaffData=JSON.parse(localStorage.getItem("benchStaff")) || []
+                  //Check if bench Staff is Present or not
+                  if(role==="benchstaff"){
+                    const staff=benchStaffData.find((s)=>s.name.toLowerCase()===username.toLowerCase())
+                    if(!staff){
+                      alert("Bench Staff Not Found! Please check your name.")
+                      return;
 
+                    }
+                  }
                   
            // Save user data to localStorage
               const userData = { username,
@@ -107,12 +98,18 @@ const LoginForm=(props)=>{
               localStorage.setItem("userData",JSON.stringify(userData))
               localStorage.setItem("showLoginToast", "true");
 
+              //*************Taking bench staff Data from Local Storage fr bench Staff Login**************************************
+
+
+
           //Routing on the basis of Role.
 
           //************************************For Site Managaer********************************************** */
               if(role === "site-manager") navigate("/dashboard/site-manager")
                 // ****************************************For Supervisor***************************************
                 else if(role === "supervisor") navigate("/dashboard/supervisor")
+                  // ***********************************For Bench Staff***********************************
+                else if(role==="benchstaff") navigate("/dashboard/bench-staff")
                   //For Toaster
                   localStorage.setItem("showLoginToast", "true");
 
@@ -166,6 +163,7 @@ const LoginForm=(props)=>{
                             <option value="site-manager" className="font-mulish">Site Manager</option>
                             <option value="hr-admin" className="font-mulish">HR Admin</option>
                             <option value="supervisor" className="font-mulish">Supervisor</option>
+                            <option value="benchstaff" className="font-mulish">Bench-Staff</option>
 
                             
                       </select>

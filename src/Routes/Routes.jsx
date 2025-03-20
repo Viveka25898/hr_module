@@ -21,6 +21,10 @@ import DashBoardLayout from "../Roles/Site-Manager/Components/DashBoardLayout"
 import BenchStaffAvalability from "../Features/Requisition-Manpower/Components/BenchStaffAvalability"
 import MyStaff from "../Features/Requisition-Manpower/Components/MyStaff"
 import Requests from "../Features/Requisition-Manpower/Components/Requests"
+import BenchStaffDashboard from "../Roles/Bench-Staff/Pages/BenchStaffDashboard"
+import BenchStaffHome from "../Roles/Bench-Staff/Components/BenchStaffHome"
+import BenchStaffClaim from "../Roles/Bench-Staff/Components/BenchStaffClaim"
+import ConveyanceRequests from "../Features/Requisition-Manpower/Components/ConveyanceRequests"
 
 
 
@@ -63,6 +67,7 @@ import Requests from "../Features/Requisition-Manpower/Components/Requests"
         { path: "requests", element: <Requests /> },
         { path: "my-requests", element: <MyRequests /> },
         {path:"bench-staff/:siteName", element:<BenchStaffAvalability/>},
+        {path:"conveyance-requests",element:<ConveyanceRequests/>}
       ],
       
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes
@@ -84,5 +89,28 @@ import Requests from "../Features/Requisition-Manpower/Components/Requests"
           element:<SupervisorRequests/>
         }
       ]
-    }
+    },
+
+
+
+    // ********************Bench Staff************************************
+    {
+      path:"/dashboard/bench-staff",
+      element:(
+        <ProtectedRoute allowedRoles={["benchstaff"]}>
+          <BenchStaffDashboard />
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index: true, // Default route when "/dashboard/supervisor" is visited
+          element: <BenchStaffHome />,
+        },
+        {
+          path:"conveyance-claim",
+          element:<BenchStaffClaim/>
+        }
+      ]
+    },
+
   ]);

@@ -10,15 +10,13 @@ const dispatch=useDispatch()
   const loggedInManager=JSON.parse(localStorage.getItem("userData")) ?.username?.trim() || ""
   
 //Loading Requests data from Redux
-const requests=useSelector((state)=>state.benchStaff.requests)
+  const requests=useSelector((state)=>state.benchStaff.requests)
 
 
  // 🔄 Load requests when the component mounts
  useEffect(() => {
-  dispatch(loadRequests());  // Make sure requests are loaded into Redux
+    dispatch(loadRequests());  // Make sure requests are loaded into Redux
 }, [dispatch]);
-
-console.log("📌 Redux Requests:", requests);  // Debugging
 
 
 //Filter the Requests only for logged in Manager
