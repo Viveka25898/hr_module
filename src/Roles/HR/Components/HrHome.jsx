@@ -1,0 +1,10 @@
+/* eslint-disable no-unused-vars */
+import React from 'react'
+
+const HrHome = () => {
+  return (
+    <div>HrHome</div>
+  )
+}
+
+export default HrHome

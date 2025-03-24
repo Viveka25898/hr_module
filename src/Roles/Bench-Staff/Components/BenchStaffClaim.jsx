@@ -53,36 +53,63 @@ const BenchStaffClaim = () => {
     }
   return (
     <>
-    <div className='p-6  max-w-2xl mx-auto bg-white shadow-md rounded-lg'>
-        <h2 className='text-2xl font-bold text-green-600'>Conveyance Claim</h2>
-        <p>Staff Name:-{staffInfo.name}</p>
-        <p className='mb-2'>Assigned Manager:{staffInfo.manager}</p>
-        <p className='mb-4'>Distance:{staffInfo.distance} Km</p>
-        <form 
-        className='space-y-4'
-        onSubmit={handleSubmit}
-        >
-            <input type="number"
-            placeholder='Enter Ammount (₹)'
-            value={ammount}
-            required
-            className='w-full p-3 border rounded-lg'
-            onChange={(e)=>setAmmount(e.target.value)}
-            />
-            <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg">
-                Submit Claim
-            </button>
-        </form>
-        <h3 className='text-xl font-bold mt-6 underline'>Your Claims</h3>
-        <ul>
-        {claims
-          .filter((claim) => claim.staffName === staffInfo.username)
-          .map((claim) => (
-            <li key={claim.id} className="border p-2 my-2">
-              ₹{claim.amount} - {claim.status}
-            </li>
-          ))}
-      </ul>
+    <div className="p-6 max-w-3xl mx-auto bg-white shadow-md rounded-lg">
+      {/* 🏆 Title */}
+      <h2 className="text-3xl font-bold text-green-700 mb-4 text-center">Conveyance Claim</h2>
+
+      {/* 👤 Staff Info */}
+      <div className="border p-4 rounded-lg shadow-sm mb-6 bg-gray-50">
+        <p className="text-lg font-semibold">📛 Staff Name: <span className="text-gray-700">{staffInfo.name}</span></p>
+        <p className="text-lg font-semibold">👤 Assigned Manager: <span className="text-gray-700">{staffInfo.manager}</span></p>
+        <p className="text-lg font-semibold">📍 Distance: <span className="text-gray-700">{staffInfo.distance} Km</span></p>
+      </div>
+
+      {/* 💰 Claim Form */}
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <input
+          type="number"
+          placeholder="Enter Amount (₹)"
+          value={ammount}
+          required
+          className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+          onChange={(e) => setAmmount(e.target.value)}
+        />
+        <button type="submit" className="w-full bg-green-600 text-white p-3 rounded-lg hover:bg-green-700 transition">
+          Submit Claim
+        </button>
+      </form>
+
+      {/* 📜 Claims Table */}
+      <h3 className="text-2xl font-bold mt-8 mb-4 text-center text-green-700">Your Claims</h3>
+      {claims.filter((claim) => claim.staffName === staffInfo.name).length === 0 ? (
+        <p className="text-center text-gray-500">No claims submitted yet.</p>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-green-600 text-white">
+                <th className="p-2 border">Amount (₹)</th>
+                <th className="p-2 border">Distance (km)</th>
+                <th className="p-2 border">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {claims
+                .filter((claim) => claim.staffName === staffInfo.name)
+                .map((claim) => (
+                  <tr key={claim.id} className="border">
+                    <td className="p-2 border text-center">₹{claim.ammount}</td>
+                    <td className="p-2 border text-center">{claim.distance} km</td>
+                    <td className={`p-2 border text-center font-bold 
+                      ${claim.status === "Pending" ? "text-yellow-600" : claim.status === "Approved" ? "text-green-600" : "text-red-600"}`}>
+                      {claim.status}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
     
     </>

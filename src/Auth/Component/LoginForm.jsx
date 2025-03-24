@@ -110,6 +110,7 @@ const LoginForm=(props)=>{
                 else if(role === "supervisor") navigate("/dashboard/supervisor")
                   // ***********************************For Bench Staff***********************************
                 else if(role==="benchstaff") navigate("/dashboard/bench-staff")
+                  else if(role==="hr") navigate("/dashboard/hr")
                   //For Toaster
                   localStorage.setItem("showLoginToast", "true");
 
@@ -161,7 +162,7 @@ const LoginForm=(props)=>{
                       value={role} onChange={(e) => setRoleValue(e.target.value)} required>
                             <option value="" className="font-mulish">Select Role</option>
                             <option value="site-manager" className="font-mulish">Site Manager</option>
-                            <option value="hr-admin" className="font-mulish">HR Admin</option>
+                            <option value="hr" className="font-mulish">HR</option>
                             <option value="supervisor" className="font-mulish">Supervisor</option>
                             <option value="benchstaff" className="font-mulish">Bench-Staff</option>
 

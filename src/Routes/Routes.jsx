@@ -25,6 +25,10 @@ import BenchStaffDashboard from "../Roles/Bench-Staff/Pages/BenchStaffDashboard"
 import BenchStaffHome from "../Roles/Bench-Staff/Components/BenchStaffHome"
 import BenchStaffClaim from "../Roles/Bench-Staff/Components/BenchStaffClaim"
 import ConveyanceRequests from "../Features/Requisition-Manpower/Components/ConveyanceRequests"
+import HrDashboard from "../Roles/HR/Pages/HrDashboard"
+import HrHome from "../Roles/HR/Components/HrHome"
+import StepperForm from "../Features/In Office Data Upload/Components/StepperForm"
+
 
 
 
@@ -109,6 +113,26 @@ import ConveyanceRequests from "../Features/Requisition-Manpower/Components/Conv
         {
           path:"conveyance-claim",
           element:<BenchStaffClaim/>
+        }
+      ]
+    },
+
+    // ***************************************HR***************************************************
+    {
+      path:"/dashboard/hr",
+      element:(
+        <ProtectedRoute allowedRoles={["hr"]}>
+          <HrDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<HrHome/>
+        },
+        {
+          path:"staff-form",
+          element:<StepperForm/>
         }
       ]
     },
