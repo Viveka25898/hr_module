@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
-const BasicDetails = () => {
+const BasicDetails = ({onNext}) => {
   const [details, setDetails] = useState({
     name: "",
     fatherName: "",
@@ -20,6 +22,17 @@ const BasicDetails = () => {
     cv: null,
     photo: null,
   });
+
+
+  const [isBlacklisted,setIsBlacklisted]=useState(false)
+  const [showModal,setShowModal]=useState(false)
+  const [currentStep, setCurrentStep] = useState(1);
+
+
+  //This Dummy data is For Functionality Checking
+  const blacklistedStaff=[
+    { aadhar: "123456789012", pan: "ABCDE1234F", name: "Ajay Sharma" },
+  ]
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target;
@@ -40,14 +53,26 @@ const BasicDetails = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+
+  //Save Function
   const handleSave = () => {
+    //Error
     let newErrors = {};
-    
     Object.keys(details).forEach((key) => {
       if (!details[key]) {
         newErrors[key] = "This field is required";
       }
     });
+// ************BlackListedChecking********************
+    const isBlacklisted=blacklistedStaff.some((staff)=>
+    Object.keys(staff).some((key)=>staff[key]===details[key])
+    )
+    setIsBlacklisted(isBlacklisted)
+
+    //Showing Toast
+    if(isBlacklisted){
+      setShowModal(true)
+    }
 
     setErrors(newErrors);
 
@@ -55,6 +80,32 @@ const BasicDetails = () => {
       console.log("Saved Data:", details);
       alert("Form submitted successfully!");
     }
+  };
+
+  const handleContinue = () => {
+    setShowModal(false);
+    // Proceed to the next step in Stepper Form (Implement this as needed)
+   onNext()
+  };
+
+  const handleAbort = () => {
+    setShowModal(false);
+   setDetails({name: "",
+    fatherName: "",
+    spouseName: "",
+    address: "",
+    localAddress: "",
+    nativeAddress: "",
+    city: "",
+    state: "",
+    phone: "",
+    aadhar: "",
+    pan: "",
+    rationCard: null,
+    prevEmployer1: "",
+    prevEmployer2: "",
+    cv: null,
+    photo: null,}) 
   };
 
   return (
@@ -204,16 +255,7 @@ const BasicDetails = () => {
          {errors["name"] && <p className="text-red-500 text-sm">{errors["name"]}</p>}
         </div>
 
-        <div>
-          <label className="block text-gray-700 font-medium">Ration Card</label>
-          <input
-            type="file"
-            name="rationCard"
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-         {errors["name"] && <p className="text-red-500 text-sm">{errors["name"]}</p>}
-        </div>
+        
 
         <div>
           <label className="block text-gray-700 font-medium">Previous Employer 1</label>
@@ -235,6 +277,16 @@ const BasicDetails = () => {
             value={details.prevEmployer2}
             onChange={handleChange}
             className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+          />
+         {errors["name"] && <p className="text-red-500 text-sm">{errors["name"]}</p>}
+        </div>
+        <div>
+          <label className="block text-gray-700 font-medium">Ration Card</label>
+          <input
+            type="file"
+            name="rationCard"
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded-lg"
           />
          {errors["name"] && <p className="text-red-500 text-sm">{errors["name"]}</p>}
         </div>
@@ -268,6 +320,28 @@ const BasicDetails = () => {
       >
         Save
       </button>
+      {showModal && (
+  <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="bg-white p-6 rounded-lg shadow-md w-80 text-center">
+      <h3 className="text-lg font-semibold text-red-600">Blacklisted Staff</h3>
+      <p className="text-gray-700 mt-2">This staff member is blacklisted.</p>
+      <div className="flex justify-center gap-4 mt-4">
+        <button
+          onClick={handleContinue} // This function will open the next step in the stepper
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Continue
+        </button>
+        <button
+          onClick={handleAbort} // This function will close the popup
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };

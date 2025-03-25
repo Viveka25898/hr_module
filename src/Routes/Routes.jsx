@@ -28,6 +28,7 @@ import ConveyanceRequests from "../Features/Requisition-Manpower/Components/Conv
 import HrDashboard from "../Roles/HR/Pages/HrDashboard"
 import HrHome from "../Roles/HR/Components/HrHome"
 import StepperForm from "../Features/In Office Data Upload/Components/StepperForm"
+import SearchBlacklists from "../Features/Blacklisting Staff/SearchBlacklists"
 
 
 
@@ -133,6 +134,10 @@ import StepperForm from "../Features/In Office Data Upload/Components/StepperFor
         {
           path:"staff-form",
           element:<StepperForm/>
+        },
+        {
+          path:"search-blacklisted",
+          element:<SearchBlacklists/>
         }
       ]
     },
