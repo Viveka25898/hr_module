@@ -29,6 +29,14 @@ import HrDashboard from "../Roles/HR/Pages/HrDashboard"
 import HrHome from "../Roles/HR/Components/HrHome"
 import StepperForm from "../Features/In Office Data Upload/Components/StepperForm"
 import SearchBlacklists from "../Features/Blacklisting Staff/SearchBlacklists"
+import AdminDashboard from "../Roles/Admin/Pages/AdminDashboard"
+import AdminHome from "../Roles/Admin/Components/AdminHome"
+import BlacklistForm from "../Features/Blacklisting Staff/BlacklistEntryForm"
+import HrHeadDashboard from "../Roles/HR Head/Pages/HrHeadDashboard"
+import HrHeadHome from "../Roles/HR Head/Components/HrHeadHome"
+import BlacklistApproval from "../Features/Blacklisting Staff/BlacklistApproval"
+import UndoRequests from "../Features/Blacklisting Staff/UndoRequests"
+import MyBlacklistedStaff from "../Features/Blacklisting Staff/MyBlacklistedStaff"
 
 
 
@@ -72,7 +80,8 @@ import SearchBlacklists from "../Features/Blacklisting Staff/SearchBlacklists"
         { path: "requests", element: <Requests /> },
         { path: "my-requests", element: <MyRequests /> },
         {path:"bench-staff/:siteName", element:<BenchStaffAvalability/>},
-        {path:"conveyance-requests",element:<ConveyanceRequests/>}
+        {path:"conveyance-requests",element:<ConveyanceRequests/>},
+        {path:"blacklist-staff",element:<BlacklistForm/>}
       ],
       
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes
@@ -138,6 +147,51 @@ import SearchBlacklists from "../Features/Blacklisting Staff/SearchBlacklists"
         {
           path:"search-blacklisted",
           element:<SearchBlacklists/>
+        }
+      ]
+    },
+    // ******************************************Admin*************************************
+    {
+      path:"/dashboard/admin",
+      element:(
+        <ProtectedRoute allowedRoles={["admin"]}>
+          <AdminDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<AdminHome/>
+        },
+        {
+          path:"blacklist-staff",
+          element:<BlacklistForm/>
+        },
+        {
+          path:"my-blacklisted-staff",
+          element:<MyBlacklistedStaff/>
+        },
+        {
+          path:"undo-requests",
+          element:<UndoRequests/>
+        }
+      ]
+    },
+    {
+      path:"/dashboard/hr-head",
+      element:(
+        <ProtectedRoute allowedRoles={["hr-head"]}>
+          <HrHeadDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<HrHeadHome/>
+        },
+        {
+          path:"blacklist-approval",
+          element:<BlacklistApproval/>
         }
       ]
     },

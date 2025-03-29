@@ -110,7 +110,12 @@ const LoginForm=(props)=>{
                 else if(role === "supervisor") navigate("/dashboard/supervisor")
                   // ***********************************For Bench Staff***********************************
                 else if(role==="benchstaff") navigate("/dashboard/bench-staff")
+                  // **********************For HR****************************************
                   else if(role==="hr") navigate("/dashboard/hr")
+                    // **************************************For Admin*************************************
+                  else if(role==="admin") navigate("/dashboard/admin")
+                      // **************************************For HR Head*************************************
+                  else if(role==="hr-head") navigate("/dashboard/hr-head")
                   //For Toaster
                   localStorage.setItem("showLoginToast", "true");
 
@@ -161,8 +166,10 @@ const LoginForm=(props)=>{
                       className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                       value={role} onChange={(e) => setRoleValue(e.target.value)} required>
                             <option value="" className="font-mulish">Select Role</option>
+                            <option value="admin" className="font-mulish">Admin</option>
                             <option value="site-manager" className="font-mulish">Site Manager</option>
                             <option value="hr" className="font-mulish">HR</option>
+                            <option value="hr-head" className="font-mulish">HR - Head</option>
                             <option value="supervisor" className="font-mulish">Supervisor</option>
                             <option value="benchstaff" className="font-mulish">Bench-Staff</option>
 
