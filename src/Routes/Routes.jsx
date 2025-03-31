@@ -37,6 +37,11 @@ import HrHeadHome from "../Roles/HR Head/Components/HrHeadHome"
 import BlacklistApproval from "../Features/Blacklisting Staff/BlacklistApproval"
 import UndoRequests from "../Features/Blacklisting Staff/UndoRequests"
 import MyBlacklistedStaff from "../Features/Blacklisting Staff/MyBlacklistedStaff"
+import CandidateDashboard from "../Roles/Candidate/Pages/CandidateDashboard"
+import CandidateHome from "../Roles/Candidate/Components/CandidateHome"
+import CandidateRegistration from "../Features/Direct Application By Staff/CandidatRegistration"
+import CandidateVerification from "../Features/Direct Application By Staff/CandidateVerification"
+import DocumentsUpload from "../Features/Direct Application By Staff/DocumentsUpload"
 
 
 
@@ -177,6 +182,7 @@ import MyBlacklistedStaff from "../Features/Blacklisting Staff/MyBlacklistedStaf
         }
       ]
     },
+    // ***************************HR-Head*****************************
     {
       path:"/dashboard/hr-head",
       element:(
@@ -192,6 +198,33 @@ import MyBlacklistedStaff from "../Features/Blacklisting Staff/MyBlacklistedStaf
         {
           path:"blacklist-approval",
           element:<BlacklistApproval/>
+        }
+      ]
+    },
+    // ***************************************Candidate********************************************
+    {
+      path:"/dashboard/candidate",
+      element:(
+        <ProtectedRoute allowedRoles={["candidate"]}>
+          <CandidateDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<CandidateHome/>
+        },
+        {
+          path:"registration",
+          element:<CandidateRegistration/>
+        },
+        {
+          path:"candidate-verification",
+          element:<CandidateVerification/>
+        },
+        {
+          path:"document-upload",
+          element:<DocumentsUpload/>
         }
       ]
     },
