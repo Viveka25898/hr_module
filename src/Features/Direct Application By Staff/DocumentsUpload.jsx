@@ -34,6 +34,8 @@ const DocumentUpload = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Uploaded Documents:", documents);
+    navigate("/dashboard/candidate/job-requirement")
+
   };
 
   return (

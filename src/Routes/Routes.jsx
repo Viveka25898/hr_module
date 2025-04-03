@@ -42,6 +42,17 @@ import CandidateHome from "../Roles/Candidate/Components/CandidateHome"
 import CandidateRegistration from "../Features/Direct Application By Staff/CandidatRegistration"
 import CandidateVerification from "../Features/Direct Application By Staff/CandidateVerification"
 import DocumentsUpload from "../Features/Direct Application By Staff/DocumentsUpload"
+import JobRequirement from "../Features/Direct Application By Staff/JobRequirement"
+import EmailAndAadharVerification from "../Features/Direct Application By Staff/EmailAndAadharVerification"
+import UINGeneration from "../Features/Direct Application By Staff/UINGeneration"
+import VendorDashboard from "../Roles/Vendor/Pages/VendorDashboard"
+import VendorHome from "../Roles/Vendor/Components/VendorHome"
+import VendorRegistration from "../Features/Direct Application By Staff/VendorRegistration"
+import EmployeeSearch from "../Features/Direct Application By Staff/EmployeeSearch"
+import TADashboard from "../Roles/TA/Pages/TADashboard"
+import TAHome from "../Roles/TA/Components/TAHome"
+import CandidateSelection from "../Features/Interview Process/CandidateSelection"
+import SelectedCandidate from "../Features/Interview Process/SelectedCandidate"
 
 
 
@@ -225,8 +236,67 @@ import DocumentsUpload from "../Features/Direct Application By Staff/DocumentsUp
         {
           path:"document-upload",
           element:<DocumentsUpload/>
+        },
+        {
+          path:"job-requirement",
+          element:<JobRequirement/>
+        },
+        {
+          path:"email-aadhar-verification",
+          element:<EmailAndAadharVerification/>
+        },
+        {
+          path:"uin",
+          element:<UINGeneration/>
         }
       ]
     },
+
+    // ************************************************************Vendor*********************************************************
+    {
+      path:"/dashboard/vendor",
+      element:(
+        <ProtectedRoute allowedRoles={["vendor"]}>
+          <VendorDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<VendorHome/>
+        },
+        {
+          path:"register",
+          element:<VendorRegistration/>
+        },
+        {
+          path:"employee-search",
+          element:<EmployeeSearch/>
+        }
+      ]
+    },
+    // ******************************************************TA*******************************************************************
+    {
+      path:"/dashboard/TA",
+      element:(
+        <ProtectedRoute allowedRoles={["TA"]}>
+          <TADashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<TAHome/>
+        },
+        {
+          path:"select-candidate",
+          element:<CandidateSelection/>
+        },
+        {
+          path:"selected-candidate",
+          element:<SelectedCandidate/>
+        }
+      ]
+    }
 
   ]);
