@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { FaBars, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
@@ -46,6 +47,36 @@ const TASidebar = () => {
             <NavLink to="/dashboard/TA/select-candidate">
 
              Select-Candidate
+            </NavLink>
+            
+          </li>
+          <hr className="border-white mx-4" />
+
+          <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
+
+              <NavLink to="/dashboard/TA/todays-interview">
+
+              Today's Interview
+              </NavLink>
+
+              </li>
+              <hr className="border-white mx-4" />
+          <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
+
+            <NavLink to="/dashboard/TA/schedule-interview">
+
+             
+             Schedule Interview
+            </NavLink>
+            
+          </li>
+          <hr className="border-white mx-4" />
+          <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
+
+            <NavLink to="/dashboard/TA/schedule-interview">
+
+             
+             Scheduled Interviews
             </NavLink>
             
           </li>

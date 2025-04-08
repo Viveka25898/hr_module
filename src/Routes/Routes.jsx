@@ -53,6 +53,11 @@ import TADashboard from "../Roles/TA/Pages/TADashboard"
 import TAHome from "../Roles/TA/Components/TAHome"
 import CandidateSelection from "../Features/Interview Process/CandidateSelection"
 import SelectedCandidate from "../Features/Interview Process/SelectedCandidate"
+import InterviewFormModal from "../Features/Interview Process/InterviewFormModal"
+import InterviewSetup from "../Features/Interview Process/InterviewSetup"
+import InterviewTable from "../Features/Interview Process/InterviewTable"
+import AssignPanelist from "../Features/Interview Process/AssignedPanalist"
+import TodayInterviews from "../Features/Interview Process/TodayInterview"
 
 
 
@@ -295,6 +300,22 @@ import SelectedCandidate from "../Features/Interview Process/SelectedCandidate"
         {
           path:"selected-candidate",
           element:<SelectedCandidate/>
+        },
+        {
+          path:"interview-setup",
+          element:<InterviewSetup/>
+        },
+        {
+          path:"interviews-table",
+          element:<InterviewTable/>
+        },
+        {
+          path:"/dashboard/TA/assign-panelist/:candidateId",
+          element:<AssignPanelist/>
+        },
+        {
+          path:"todays-interview",
+          element:<TodayInterviews/>
         }
       ]
     }

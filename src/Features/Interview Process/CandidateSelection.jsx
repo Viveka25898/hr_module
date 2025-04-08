@@ -46,6 +46,49 @@ const candidatesData = [
     },
     type: "Full-time",
     category: "Backend"
+  },
+  { 
+    id: 4, 
+    name: "John Doe", 
+    experience: "5 Years", 
+    skills: "React, Node.js", 
+    feedback: "Good", 
+    status: "Available", 
+    remarks: "Strong in front-end, needs improvement in backend.",
+    previousInterview: "Passed technical round, but salary expectations were high.",
+    exitDetails: null,
+    type: "Full-time",
+    category: "Frontend"
+  },
+  { 
+    id: 5, 
+    name: "Jane Smith", 
+    experience: "3 Years", 
+    skills: "Python, Django", 
+    feedback: "Blacklisted", 
+    status: "Blacklisted", 
+    remarks: "Unprofessional behavior in last interview.",
+    previousInterview: "Rejected due to poor communication skills.",
+    exitDetails: null,
+    type: "Part-time",
+    category: "Backend"
+  },
+  { 
+    id: 6, 
+    name: "Robert Brown", 
+    experience: "7 Years", 
+    skills: "Java, Spring Boot", 
+    feedback: "Excellent", 
+    status: "Available", 
+    remarks: "Great leadership skills.",
+    previousInterview: "Cleared technical and managerial rounds.",
+    exitDetails: {
+      company: "XYZ Ltd.",
+      reason: "Better opportunity",
+      interviewFeedback: "Good performer but left due to salary issues."
+    },
+    type: "Full-time",
+    category: "Backend"
   }
 ];
 
