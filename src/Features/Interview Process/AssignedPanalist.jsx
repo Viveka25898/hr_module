@@ -1,91 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-// Dummy candidate data
-const dummyCandidates = [
-  {
-    id: 1,
-    candidateName: "Rohit Sharma",
-    interviewDate: "2025-04-08",
-    entryTime: "10:30 AM",
-    grade: "Executive",
-    department: "Operations",
-  },
-  {
-    id: 2,
-    candidateName: "Priya Desai",
-    interviewDate: "2025-04-08",
-    entryTime: "11:00 AM",
-    grade: "Manager",
-    department: "Finance",
-  },
-  {
-    id: 3,
-    candidateName: "Ankit Patel",
-    interviewDate: "2025-04-08",
-    entryTime: "11:45 AM",
-    grade: "Vice President",
-    department: "Marketing",
-  },
-  {
-    id: 4,
-    candidateName: "Sneha Shah",
-    interviewDate: "2025-04-08",
-    entryTime: "12:30 PM",
-    grade: "Supervisor",
-    department: "Sales",
-  },
-  {
-    id: 5,
-    candidateName: "Aman Gupta",
-    interviewDate: "2025-04-08",
-    entryTime: "01:00 PM",
-    grade: "Manager",
-    department: "IT",
-  },
-  {
-    id: 6,
-    candidateName: "Komal Joshi",
-    interviewDate: "2025-04-08",
-    entryTime: "01:30 PM",
-    grade: "Vice President",
-    department: "Operations",
-  },
-  {
-    id: 7,
-    candidateName: "Deepak Nair",
-    interviewDate: "2025-04-08",
-    entryTime: "02:00 PM",
-    grade: "Executive",
-    department: "HR",
-  },
-  {
-    id: 8,
-    candidateName: "Neha Mehta",
-    interviewDate: "2025-04-08",
-    entryTime: "02:30 PM",
-    grade: "Manager",
-    department: "Admin",
-  },
-  {
-    id: 9,
-    candidateName: "Yash Raj",
-    interviewDate: "2025-04-08",
-    entryTime: "03:00 PM",
-    grade: "Supervisor",
-    department: "Finance",
-  },
-  {
-    id: 10,
-    candidateName: "Tanya Kapoor",
-    interviewDate: "2025-04-08",
-    entryTime: "03:30 PM",
-    grade: "Vice President",
-    department: "Admin",
-  },
-];
+// Dummy candidate
+const dummyCandidate = {
+  id: 2,
+  candidateName: "Priya Desai",
+  interviewDate: "2025-04-08",
+  entryTime: "11:00 AM",
+  grade: "Manager",
+  department: "Finance",
+};
 
 // Dummy panelists
 const allPanelists = [
@@ -99,31 +25,35 @@ const allPanelists = [
 ];
 
 const AssignPanelist = () => {
-  const { candidateId } = useParams();
   const navigate = useNavigate();
   const [candidate, setCandidate] = useState(null);
   const [assigned, setAssigned] = useState(false);
   const [selectedPanelists, setSelectedPanelists] = useState([]);
+  const [interviewType, setInterviewType] = useState("");
+  const [interviewRound, setInterviewRound] = useState("");
 
   useEffect(() => {
-    const found = dummyCandidates.find((c) => c.id === Number(candidateId));
-    if (found) {
-      setCandidate(found);
+    const found = dummyCandidate;
+    setCandidate(found);
 
-      // Panelist assignment logic
-      let panelCount = 0;
-      if (found.grade === "Manager") panelCount = 1;
-      if (found.grade === "Vice President") panelCount = 2;
+    // Pre-select panelists based on grade
+    let panelCount = 0;
+    if (found.grade === "Manager") panelCount = 1;
+    else if (found.grade === "Vice President") panelCount = 2;
 
-      const eligiblePanelists = allPanelists.filter(
-        (p) => p.department !== found.department
-      );
+    const eligiblePanelists = allPanelists.filter(
+      (p) => p.department !== found.department
+    );
 
-      setSelectedPanelists(eligiblePanelists.slice(0, panelCount));
-    }
-  }, [candidateId]);
+    setSelectedPanelists(eligiblePanelists.slice(0, panelCount));
+  }, []);
 
   const handleAssign = () => {
+    if (!interviewType || !interviewRound) {
+      toast.error("Please fill Interview Type and Interview Round.");
+      return;
+    }
+
     setAssigned(true);
     toast.success("Panelist(s) assigned successfully!");
   };
@@ -142,6 +72,36 @@ const AssignPanelist = () => {
         Assign Panelist
       </h2>
 
+      {/* Interview Info Selection */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 border border-green-300 p-4 rounded shadow">
+        <div>
+          <label className="block mb-1 font-medium">Interview Type</label>
+          <select
+            value={interviewType}
+            onChange={(e) => setInterviewType(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          >
+            <option value="">Select Type</option>
+            <option value="Technical">Technical</option>
+            <option value="HR">HR</option>
+            <option value="Managerial">Managerial</option>
+            <option value="Vice President">Vice President</option>
+            <option value="Final Round">Final Round</option>
+          </select>
+        </div>
+        <div>
+          <label className="block mb-1 font-medium">Interview Round</label>
+          <input
+            type="text"
+            placeholder="e.g., Round 1"
+            value={interviewRound}
+            onChange={(e) => setInterviewRound(e.target.value)}
+            className="w-full border px-3 py-2 rounded"
+          />
+        </div>
+      </div>
+
+      {/* Candidate Info */}
       <div className="border border-green-300 rounded p-4 mb-6 shadow">
         <h3 className="text-xl font-semibold text-green-800 mb-4">
           Candidate Information
@@ -151,23 +111,40 @@ const AssignPanelist = () => {
         <p><strong>Entry Time:</strong> {candidate.entryTime}</p>
         <p><strong>Grade:</strong> {candidate.grade}</p>
         <p><strong>Department:</strong> {candidate.department}</p>
+
+        {/* Display Interview Info if entered */}
+        {interviewType && interviewRound && (
+          <div className="bg-green-50 p-3 rounded mt-4 border border-green-200">
+            <p className="text-green-800 font-semibold">
+              Interview Type: <span className="font-normal">{interviewType}</span>
+            </p>
+            <p className="text-green-800 font-semibold">
+              Interview Round: <span className="font-normal">{interviewRound}</span>
+            </p>
+          </div>
+        )}
       </div>
 
+      {/* Assigned Panelist */}
       <div className="border border-green-300 rounded p-4 shadow">
         <h3 className="text-xl font-semibold text-green-800 mb-4">Assigned Panelists</h3>
+
         {selectedPanelists.length > 0 ? (
-          <ul className="list-disc pl-5 space-y-1">
-            {selectedPanelists.map((p) => (
-              <li key={p.id}>
-                {p.name} – {p.designation} ({p.department})
+          <ul className="list-disc pl-5 space-y-1 mb-4">
+            {selectedPanelists.map((panelist) => (
+              <li key={panelist.id}>
+                {panelist.name} – {panelist.designation} ({panelist.department})
               </li>
             ))}
           </ul>
         ) : (
-          <p className="text-gray-500">No additional panelists required.</p>
+          assigned && (
+            <p className="text-gray-500 mb-4">No panelists assigned.</p>
+          )
         )}
       </div>
 
+      {/* Buttons */}
       <div className="mt-6 flex gap-4">
         <button
           className={`px-5 py-2 rounded font-semibold ${

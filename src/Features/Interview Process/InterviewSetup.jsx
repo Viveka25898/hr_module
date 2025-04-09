@@ -13,6 +13,8 @@ const InterviewSetup = () => {
   const [grade, setGrade] = useState("");
   const [isTechnicalStaff, setIsTechnicalStaff] = useState(false);
   const [isFinalRound, setIsFinalRound] = useState(false);
+  const [interviewType, setInterviewType] = useState("");
+
 
   const handleEntrySubmit = () => {
     if (!timeOfEntry || !grade) {
@@ -27,8 +29,10 @@ const InterviewSetup = () => {
       isTechnicalStaff,
       isFinalRound,
     };
+    console.log(entryData);
 
-    navigate("/dashboard/TA/interviews-table", { state: entryData });
+
+    navigate("/dashboard/TA/assign-panelist", { state: entryData });
   };
 
   return (
@@ -37,6 +41,7 @@ const InterviewSetup = () => {
                 Interview Setup
         </h1>
       <div>
+
         <label className="font-medium">Candidate Name:</label>
         <input
           className="w-full border p-2 rounded mt-1"
@@ -46,6 +51,20 @@ const InterviewSetup = () => {
           readOnly
         />
       </div>
+
+      <div>
+        <label className="font-medium">Interview Type:</label>
+        <select
+          className="w-full border p-2 rounded mt-1"
+          value={interviewType}
+          onChange={(e) => setInterviewType(e.target.value)}
+        >
+          <option value="">Select Interview Type</option>
+          <option value="Telephonic">Telephonic</option>
+          <option value="In-Person">In-Person</option>
+        </select>
+      </div>
+
 
       <div>
         <label className="font-medium">Time of Entry:</label>

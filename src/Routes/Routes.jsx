@@ -58,6 +58,8 @@ import InterviewSetup from "../Features/Interview Process/InterviewSetup"
 import InterviewTable from "../Features/Interview Process/InterviewTable"
 import AssignPanelist from "../Features/Interview Process/AssignedPanalist"
 import TodayInterviews from "../Features/Interview Process/TodayInterview"
+import InterviewProgress from "../Features/Interview Process/IntreviewProgress"
+import FormSelector from "../Features/Interview Process/Components/InterviewForms/FormSelector"
 
 
 
@@ -310,12 +312,20 @@ import TodayInterviews from "../Features/Interview Process/TodayInterview"
           element:<InterviewTable/>
         },
         {
-          path:"/dashboard/TA/assign-panelist/:candidateId",
+          path:"assign-panelist",
           element:<AssignPanelist/>
         },
         {
           path:"todays-interview",
           element:<TodayInterviews/>
+        },
+        {
+          path:"interview-progress",
+          element:<InterviewProgress/>
+        },
+        {
+          path:"form-selector",
+          element:<FormSelector/>
         }
       ]
     }

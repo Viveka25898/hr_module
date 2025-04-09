@@ -52,31 +52,33 @@ const TodaysInterview = () => {
   const navigate = useNavigate();
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLICOpen, setIsLICOpen] = useState(false);
 
-  const openModal = (candidate) => {
+  const openPanelistModal = (candidate) => {
     setSelectedCandidate(candidate);
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
     setSelectedCandidate(null);
+    setIsModalOpen(false);
+    setIsLICOpen(false);
   };
 
   const exportToPDF = () => {
     const doc = new jsPDF();
     doc.text("Today's Interview Candidates", 14, 15);
 
-    const tableData = dummyCandidates.map((candidate) => [
-      candidate.candidateName,
-      candidate.entryTime,
-      candidate.department,
-      candidate.grade,
-      candidate.totalRounds,
-      candidate.completedRounds,
-      getPanelistRequirement(candidate.grade) === 0
+    const tableData = dummyCandidates.map((c) => [
+      c.candidateName,
+      c.entryTime,
+      c.department,
+      c.grade,
+      c.totalRounds,
+      c.completedRounds,
+      getPanelistRequirement(c.grade) === 0
         ? "No Panelist Required"
-        : candidate.assigned
+        : c.assigned
         ? "Assigned"
         : "Not Assigned",
     ]);
@@ -102,8 +104,9 @@ const TodaysInterview = () => {
 
   return (
     <div className="p-6 bg-white min-h-screen">
+      {/* Title & PDF Export */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-center text-green-700 border-b-2 border-green-300 pb-2">
+        <h2 className="text-3xl font-bold text-green-700 border-b-2 border-green-300 pb-2">
           Today's Interviews
         </h2>
         <button
@@ -114,17 +117,19 @@ const TodaysInterview = () => {
         </button>
       </div>
 
+      {/* Interview Table */}
       <div className="overflow-x-auto shadow-md rounded border border-green-200">
         <table className="min-w-full text-sm text-center">
           <thead className="bg-green-400 text-green-800 font-semibold">
             <tr>
-              <th className="px-4 py-3 border border-green-200">Candidate Name</th>
-              <th className="px-4 py-3 border border-green-200">Interview Time</th>
-              <th className="px-4 py-3 border border-green-200">Department</th>
-              <th className="px-4 py-3 border border-green-200">Grade</th>
-              <th className="px-4 py-3 border border-green-200">Total Rounds</th>
-              <th className="px-4 py-3 border border-green-200">Completed Rounds</th>
-              <th className="px-4 py-3 border border-green-200">Action</th>
+              <th className="px-4 py-3 border">Candidate Name</th>
+              <th className="px-4 py-3 border">Interview Time</th>
+              <th className="px-4 py-3 border">Department</th>
+              <th className="px-4 py-3 border">Grade</th>
+              <th className="px-4 py-3 border">Total Rounds</th>
+              <th className="px-4 py-3 border">Completed Rounds</th>
+              <th className="px-4 py-3 border">Action</th>
+              <th className="px-4 py-3 border">Start Interview</th> {/* New Column */}
             </tr>
           </thead>
           <tbody>
@@ -132,31 +137,26 @@ const TodaysInterview = () => {
               const panelistCount = getPanelistRequirement(candidate.grade);
 
               return (
-                <tr
-                  key={candidate.id}
-                  className="hover:bg-green-50 transition duration-200"
-                >
-                  <td className="px-4 py-3 border border-green-100">{candidate.candidateName}</td>
-                  <td className="px-4 py-3 border border-green-100">{candidate.entryTime}</td>
-                  <td className="px-4 py-3 border border-green-100">{candidate.department}</td>
-                  <td className="px-4 py-3 border border-green-100">{candidate.grade}</td>
-                  <td className="px-4 py-3 border border-green-100">{candidate.totalRounds}</td>
-                  <td className="px-4 py-3 border border-green-100">{candidate.completedRounds}</td>
-                  <td className="px-4 py-3 border border-green-100">
+                <tr key={candidate.id} className="hover:bg-green-50 transition">
+                  <td className="px-4 py-2 border">{candidate.candidateName}</td>
+                  <td className="px-4 py-2 border">{candidate.entryTime}</td>
+                  <td className="px-4 py-2 border">{candidate.department}</td>
+                  <td className="px-4 py-2 border">{candidate.grade}</td>
+                  <td className="px-4 py-2 border">{candidate.totalRounds}</td>
+                  <td className="px-4 py-2 border">{candidate.completedRounds}</td>
+                  <td className="px-4 py-2 border">
                     {panelistCount === 0 ? (
                       <span className="text-gray-500 italic">No Panelist Required</span>
                     ) : candidate.assigned ? (
                       <button
                         className="text-blue-600 hover:underline font-medium"
-                        title="View Panelist"
-                        onClick={() => openModal(candidate)}
+                        onClick={() => openPanelistModal(candidate)}
                       >
                         View Panelist
                       </button>
                     ) : (
                       <button
                         className="text-green-600 hover:underline font-medium"
-                        title="Assign Panelist"
                         onClick={() =>
                           navigate(`/dashboard/TA/assign-panelist/${candidate.id}`)
                         }
@@ -165,6 +165,13 @@ const TodaysInterview = () => {
                       </button>
                     )}
                   </td>
+                  <td className="px-4 py-2 border">
+                    <button
+                      className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                    >
+                      Start Interview
+                    </button>
+                  </td>
                 </tr>
               );
             })}
@@ -172,7 +179,7 @@ const TodaysInterview = () => {
         </table>
       </div>
 
-      {/* *************** Modal To See Panelist **************** */}
+      {/* View Panelist Modal */}
       {isModalOpen && selectedCandidate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white rounded-lg shadow-lg w-full max-w-md p-6 relative">
@@ -186,16 +193,16 @@ const TodaysInterview = () => {
               Assigned Panelist
             </h2>
             <div className="space-y-2">
-              <p><span className="font-medium">Name:</span> Arjun Mehta</p>
-              <p><span className="font-medium">Designation:</span> Senior HR</p>
+              <p><strong>Name:</strong> Arjun Mehta</p>
+              <p><strong>Designation:</strong> Senior HR</p>
               <hr />
-              <p><span className="font-medium">Name:</span> Meena Kulkarni</p>
-              <p><span className="font-medium">Designation:</span> Operations Lead</p>
+              <p><strong>Name:</strong> Meena Kulkarni</p>
+              <p><strong>Designation:</strong> Operations Lead</p>
             </div>
             <div className="mt-6 text-right">
               <button
                 onClick={closeModal}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
               >
                 Close
               </button>
