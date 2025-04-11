@@ -1,0 +1,22 @@
+/* CandidateOfferView.css */
+
+/* Disable printing */
+@media print {
+    .no-print {
+      display: none !important;
+    }
+  }
+  
+  /* Attempt to disable screenshots (limited protection) */
+  .no-screenshot {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -webkit-touch-callout: none;
+    pointer-events: none;
+  }
+  
+  .no-screenshot * {
+    pointer-events: auto;
+  }
+  

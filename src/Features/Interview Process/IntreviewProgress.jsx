@@ -12,6 +12,7 @@ const dummyInterviewData = [
     totalRounds: 3,
     completedRounds: 2,
     result: null,
+    roundNames: ["HR Round", "Technical Round", "Manager Round"],
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const dummyInterviewData = [
     totalRounds: 2,
     completedRounds: 2,
     result: "Pass",
+    roundNames: ["Initial Screening", "Final Round"],
   },
   {
     id: 3,
@@ -32,36 +34,7 @@ const dummyInterviewData = [
     totalRounds: 3,
     completedRounds: 0,
     result: null,
-  },
-  {
-    id: 4,
-    name: "Rohit Sharma",
-    skills: "Operations, Leadership",
-    grade: "Executive",
-    department: "Operations",
-    totalRounds: 3,
-    completedRounds: 2,
-    result: null,
-  },
-  {
-    id: 5,
-    name: "Priya Desai",
-    skills: "Sales, CRM",
-    grade: "Manager",
-    department: "Sales",
-    totalRounds: 2,
-    completedRounds: 2,
-    result: "Pass",
-  },
-  {
-    id: 6,
-    name: "Ankit Patel",
-    skills: "Marketing, Branding",
-    grade: "Vice President",
-    department: "Marketing",
-    totalRounds: 3,
-    completedRounds: 0,
-    result: null,
+    roundNames: ["Creative Round", "Marketing Strategy", "Leadership Round"],
   },
 ];
 
@@ -72,6 +45,9 @@ const InterviewProgress = () => {
   const [pendingCandidate, setPendingCandidate] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
 
+  const [viewRoundsModal, setViewRoundsModal] = useState(false);
+  const [selectedCandidateRounds, setSelectedCandidateRounds] = useState([]);
+
   const navigate = useNavigate();
 
   const handleScheduleRound = (candidateId) => {
@@ -79,7 +55,7 @@ const InterviewProgress = () => {
   };
 
   const handleNextStage = (candidateId) => {
-    navigate(`/next-stage/${candidateId}`);
+    navigate("/dashboard/TA/review-candidate")
   };
 
   const handleResultChange = (e, index) => {
@@ -164,6 +140,13 @@ const InterviewProgress = () => {
     }
   };
 
+  const handleViewRounds = (item) => {
+    const completed = item.roundNames.slice(0, item.completedRounds);
+    const remaining = item.roundNames.slice(item.completedRounds);
+    setSelectedCandidateRounds({ completed, remaining });
+    setViewRoundsModal(true);
+  };
+
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto">
       <div className="p-6 bg-white min-h-screen">
@@ -207,8 +190,24 @@ const InterviewProgress = () => {
                   <td className="px-2 py-2 border text-sm">{item.skills}</td>
                   <td className="px-2 py-2 border text-sm">{item.department}</td>
                   <td className="px-2 py-2 border text-sm">{item.grade}</td>
-                  <td className="px-2 py-2 border text-sm">{item.totalRounds}</td>
-                  <td className="px-2 py-2 border text-sm">{item.completedRounds}</td>
+                  <td className="px-2 py-2 border text-sm">
+                    {item.totalRounds}{" "}
+                    <button
+                      onClick={() => handleViewRounds(item)}
+                      className="text-blue-600 underline text-xs hover:text-blue-800"
+                    >
+                      View Details
+                    </button>
+                  </td>
+                  <td className="px-2 py-2 border text-sm">
+                    {item.completedRounds}{" "}
+                    <button
+                      onClick={() => handleViewRounds(item)}
+                      className="text-blue-600 underline text-xs hover:text-blue-800"
+                    >
+                      View Details
+                    </button>
+                  </td>
                   <td className="px-2 py-2 border text-sm">{renderStatus(item, index)}</td>
                   <td className="px-2 py-2 border text-sm">
                     {item.completedRounds > 0 ? (
@@ -224,7 +223,7 @@ const InterviewProgress = () => {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
+      {/* Result Confirmation Modal */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full">
@@ -244,6 +243,57 @@ const InterviewProgress = () => {
                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
               >
                 Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Round View Modal */}
+      {viewRoundsModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <h3 className="text-lg font-semibold mb-4 text-center">Round Details</h3>
+            <table className="w-full text-sm border">
+              <thead>
+                <tr className="bg-green-100">
+                  <th className="border px-2 py-1">Completed Rounds</th>
+                  <th className="border px-2 py-1">Remaining Rounds</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border px-2 py-2 align-top">
+                    {selectedCandidateRounds.completed.length > 0 ? (
+                      <ul className="list-disc list-inside">
+                        {selectedCandidateRounds.completed.map((round, idx) => (
+                          <li key={idx}>{round}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="text-gray-500">None</span>
+                    )}
+                  </td>
+                  <td className="border px-2 py-2 align-top">
+                    {selectedCandidateRounds.remaining.length > 0 ? (
+                      <ul className="list-disc list-inside">
+                        {selectedCandidateRounds.remaining.map((round, idx) => (
+                          <li key={idx}>{round}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span className="text-gray-500">None</span>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={() => setViewRoundsModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Close
               </button>
             </div>
           </div>

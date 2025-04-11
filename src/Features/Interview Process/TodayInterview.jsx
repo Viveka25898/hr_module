@@ -102,6 +102,11 @@ const TodaysInterview = () => {
     doc.save("Todays_Interviews.pdf");
   };
 
+
+  const handleStartInterview=()=>{
+    navigate("/dashboard/TA/form-selector")
+  }
+
   return (
     <div className="p-6 bg-white min-h-screen">
       {/* Title & PDF Export */}
@@ -167,6 +172,7 @@ const TodaysInterview = () => {
                   </td>
                   <td className="px-4 py-2 border">
                     <button
+                    onClick={handleStartInterview}
                       className="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                     >
                       Start Interview

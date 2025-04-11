@@ -4,7 +4,7 @@ import { FaBars, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 
-const HrHeadSidebar = () => {
+const HODSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,30 +25,25 @@ const HrHeadSidebar = () => {
       >
         {/* Sidebar Header */}
         <div className="p-4 text-xl font-semibold bg-green-800 text-center">
-         Hr - Head
+       HOD
         </div>
 
         {/* Sidebar Menu */}
         <ul className="mt-6">
         <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
-              <NavLink to="/dashboard/hr-head">
+              <NavLink to="/dashboard/hod">
                 Dashboard
-              </NavLink>
-        </li>
-        <hr className="border-white mx-4" />
-        <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
-              <NavLink to="/dashboard/hr-head/blacklist-approval">
-                Warning/Blacklisting Requests
               </NavLink>
         </li>
         <hr className="border-white mx-4" />
 
         <li className="px-6 py-2 hover:bg-green-600 cursor-pointer text-sm">
-              <NavLink to="/dashboard/hr-head/approval-from-hod">
-                Approval From HOD
+              <NavLink to="/dashboard/hod/approval-from-deemed">
+                Approvals From Deemed Suprevisor
               </NavLink>
         </li>
         <hr className="border-white mx-4" />
+        
          
         </ul>
       </div>
@@ -56,4 +51,4 @@ const HrHeadSidebar = () => {
   );
 };
 
-export default HrHeadSidebar;
+export default HODSidebar;

@@ -60,6 +60,18 @@ import AssignPanelist from "../Features/Interview Process/AssignedPanalist"
 import TodayInterviews from "../Features/Interview Process/TodayInterview"
 import InterviewProgress from "../Features/Interview Process/IntreviewProgress"
 import FormSelector from "../Features/Interview Process/Components/InterviewForms/FormSelector"
+import CandidateReviewPage from "../Features/Interview Process/ReviewCandidate"
+import OfferLetterPage from "../Features/Interview Process/OfferLetterPage"
+import DeemedSupervisorDashboard from "../Roles/Deemed Supervisor/Pages/DeemedSupervisorDashboard"
+import DeemedSupervisorHome from "../Roles/Deemed Supervisor/Components/DeemedSupervisorHome"
+import DeemedSupervisorApprovalPage from "../Features/Interview Process/DeemedSupervisorApprovalPage"
+import HODDashboard from "../Roles/HOD/Pages/HODDashboard"
+import HODHome from "../Roles/HOD/Components/HODHome"
+import HODApprovalPage from "../Features/Interview Process/HODApprovalPage"
+import HRHeadApprovalPage from "../Features/Interview Process/HRHeadApprovalPage"
+import TAOfferManagementPage from "../Features/Interview Process/TAOfferManagement"
+import SendOfferPage from "../Features/Interview Process/SendOfferPage"
+import CandidateOfferView from "../Features/Interview Process/CandidateOfferView"
 
 
 
@@ -216,6 +228,10 @@ import FormSelector from "../Features/Interview Process/Components/InterviewForm
         {
           path:"blacklist-approval",
           element:<BlacklistApproval/>
+        },
+        {
+          path:"approval-from-hod",
+          element:<HRHeadApprovalPage/>
         }
       ]
     },
@@ -255,6 +271,10 @@ import FormSelector from "../Features/Interview Process/Components/InterviewForm
         {
           path:"uin",
           element:<UINGeneration/>
+        },
+        {
+          path:"view-offer",
+          element:<CandidateOfferView/>
         }
       ]
     },
@@ -326,8 +346,62 @@ import FormSelector from "../Features/Interview Process/Components/InterviewForm
         {
           path:"form-selector",
           element:<FormSelector/>
+        },
+        {
+          path:"review-candidate",
+          element:<CandidateReviewPage/>
+        },
+        {
+          path:"offer-letter",
+          element:<OfferLetterPage/>
+        },
+        {
+          path:"offer-management",
+          element:<TAOfferManagementPage/>
+        },
+        {
+          path:"send-offer",
+          element:<SendOfferPage/>
         }
       ]
-    }
+    },
+    // ***************************************Deemed Supervisor****************************************************
+    {
+      path:"/dashboard/deemedsupervisor",
+      element:(
+        <ProtectedRoute allowedRoles={["deemedsupervisor"]}>
+          <DeemedSupervisorDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<DeemedSupervisorHome/>
+        },
+        {
+          path:"deemed-approval",
+          element:<DeemedSupervisorApprovalPage/>
+        }
+      ]
+    },
+    // ********************************************HOD********************************************************
+    {
+      path:"/dashboard/hod",
+      element:(
+        <ProtectedRoute allowedRoles={["hod"]}>
+          <HODDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<HODHome/>
+        },
+        {
+          path:"approval-from-deemed",
+          element:<HODApprovalPage/>
+        }
+      ]
+    },
 
   ]);
