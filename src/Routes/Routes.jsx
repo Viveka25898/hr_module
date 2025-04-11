@@ -72,6 +72,7 @@ import HRHeadApprovalPage from "../Features/Interview Process/HRHeadApprovalPage
 import TAOfferManagementPage from "../Features/Interview Process/TAOfferManagement"
 import SendOfferPage from "../Features/Interview Process/SendOfferPage"
 import CandidateOfferView from "../Features/Interview Process/CandidateOfferView"
+import CandidateUniformForm from "../Features/Uniform and Others/Pages/CandidateUniform"
 
 
 
@@ -275,6 +276,10 @@ import CandidateOfferView from "../Features/Interview Process/CandidateOfferView
         {
           path:"view-offer",
           element:<CandidateOfferView/>
+        },
+        {
+          path:"uniform-form",
+          element:<CandidateUniformForm/>
         }
       ]
     },
