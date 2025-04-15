@@ -58,6 +58,19 @@ const SiteManagerSidebar = () => {
           </li>
           <hr className="border-white mx-4" />
 
+
+          {/* ****************************Joiner Review******************** */}
+          <li
+            className="px-6 text-sm py-2 flex justify-between items-center hover:bg-green-600 cursor-pointer"
+            onClick={() => setRequisitionOpen(!requisitionOpen)}
+          >
+            <NavLink to="/dashboard/site-manager/joiner-review">
+              Joiner Review
+            </NavLink>
+            </li>
+
+            <hr className="border-white mx-4" />
+
           {/* *****************Conveyance Requests***************** */}
           <li className="px-6 py-1 hover:bg-green-600 cursor-pointer text-sm">
             <NavLink to="/dashboard/site-manager/conveyance-requests">Conveyance Requests</NavLink>
@@ -74,6 +87,8 @@ const SiteManagerSidebar = () => {
 
               {requisitionOpen ? <FaChevronUp size={14} /> : <FaChevronDown size={14} />}
             </li>
+
+            
 
 {/* Sub-option: Manpower Request */}
               {requisitionOpen && (

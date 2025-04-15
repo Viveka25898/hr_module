@@ -73,6 +73,13 @@ import TAOfferManagementPage from "../Features/Interview Process/TAOfferManageme
 import SendOfferPage from "../Features/Interview Process/SendOfferPage"
 import CandidateOfferView from "../Features/Interview Process/CandidateOfferView"
 import CandidateUniformForm from "../Features/Uniform and Others/Pages/CandidateUniform"
+import JoinerDashboard from "../Features/OnBoarding and Digital ID Card/Pages/JoinerDashboard"
+import CandidatePFForm from "../Features/OnBoarding and Digital ID Card/Components/CandidatePFForm"
+import JoinerReviewPage from "../Features/OnBoarding and Digital ID Card/Components/JoinerReviewPage"
+import BHRDashboard from "../Roles/BHR/Pages/BHRDashboard"
+import BHRHome from "../Roles/BHR/Components/BHRHome"
+import JoinerReviewTable from "../Features/OnBoarding and Digital ID Card/Components/JoinerReviewTable"
+import DailyReportPage from "../Features/OnBoarding and Digital ID Card/Pages/DailyReportPage"
 
 
 
@@ -117,7 +124,11 @@ import CandidateUniformForm from "../Features/Uniform and Others/Pages/Candidate
         { path: "my-requests", element: <MyRequests /> },
         {path:"bench-staff/:siteName", element:<BenchStaffAvalability/>},
         {path:"conveyance-requests",element:<ConveyanceRequests/>},
-        {path:"blacklist-staff",element:<BlacklistForm/>}
+        {path:"blacklist-staff",element:<BlacklistForm/>},
+        {
+          path:"joiner-review",
+          element:<JoinerReviewTable/>
+        }
       ],
       
       errorElement: <h1>Dashboard Not Found!</h1>, // Error handling for dashboard routes
@@ -280,6 +291,10 @@ import CandidateUniformForm from "../Features/Uniform and Others/Pages/Candidate
         {
           path:"uniform-form",
           element:<CandidateUniformForm/>
+        },
+        {
+          path:"pf-form",
+          element:<CandidatePFForm/>
         }
       ]
     },
@@ -367,6 +382,10 @@ import CandidateUniformForm from "../Features/Uniform and Others/Pages/Candidate
         {
           path:"send-offer",
           element:<SendOfferPage/>
+        },
+        {
+          path:"joiners",
+          element:<JoinerDashboard/>
         }
       ]
     },
@@ -405,6 +424,30 @@ import CandidateUniformForm from "../Features/Uniform and Others/Pages/Candidate
         {
           path:"approval-from-deemed",
           element:<HODApprovalPage/>
+        }
+      ]
+    },
+
+    // ************************************************BHR*********************************************
+    {
+      path:"/dashboard/bhr",
+      element:(
+        <ProtectedRoute allowedRoles={["bhr"]}>
+          <BHRDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<BHRHome/>
+        },
+        {
+          path:"joiner-review",
+          element:<JoinerReviewTable/>
+        },
+        {
+          path:"daily-report",
+          element:<DailyReportPage/>
         }
       ]
     },
