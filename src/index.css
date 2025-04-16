@@ -6,4 +6,16 @@
     height: 100%;
     overflow-y: auto; /* Ensure scrolling */
   }
+  .perspective {
+    perspective: 1000px;
+  }
+  .transform-style-preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
   

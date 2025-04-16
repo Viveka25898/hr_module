@@ -80,6 +80,9 @@ import BHRDashboard from "../Roles/BHR/Pages/BHRDashboard"
 import BHRHome from "../Roles/BHR/Components/BHRHome"
 import JoinerReviewTable from "../Features/OnBoarding and Digital ID Card/Components/JoinerReviewTable"
 import DailyReportPage from "../Features/OnBoarding and Digital ID Card/Pages/DailyReportPage"
+import EmployeeDashboard from "../Roles/Employee/Pages/EmployeeDashboard"
+import EmployeeHome from "../Roles/Employee/Components/EmployeeHome"
+import DigitalIDCardPage from "../Features/Digital ID Card/Pages/DigitalIDCrdPage"
 
 
 
@@ -451,5 +454,25 @@ import DailyReportPage from "../Features/OnBoarding and Digital ID Card/Pages/Da
         }
       ]
     },
+
+    // *****************************************************Employee****************************************************************
+    {
+      path:"/dashboard/emp",
+      element:(
+        <ProtectedRoute allowedRoles={["emp"]}>
+          <EmployeeDashboard/>
+        </ProtectedRoute>
+      ),
+      children:[
+        {
+          index:true,
+          element:<EmployeeHome/>
+        },
+       {
+        path:"digital-id-card",
+        element:<DigitalIDCardPage/>
+       }
+      ]
+    }
 
   ]);

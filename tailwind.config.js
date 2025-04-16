@@ -15,6 +15,14 @@ export default {
         rokkitt: ["Rokkitt", "serif"],
         tapestry: ["Tapestry", "cursive"],
       },
+    
+      transformOrigin: {
+        'center': 'center',
+      },
+      perspective: {
+        '1000': '1000px',
+      },
+      
     },
   },
   plugins: [],
