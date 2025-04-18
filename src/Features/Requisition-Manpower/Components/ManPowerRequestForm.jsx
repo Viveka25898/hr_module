@@ -24,6 +24,8 @@ const ManpowerRequestForm = () => {
     department: "",
     budget: "",
     location: "",
+    fromDate:"",
+    toDate:"",
     isUnbudgeted: false, // Track if request is unbudgeted
   });
 
@@ -139,6 +141,8 @@ const ManpowerRequestForm = () => {
         grade: "",
         department: "",
         budget: "",
+        fromDate:"",
+        toDate:"",
         location: "",
       });
     }
@@ -194,6 +198,7 @@ const ManpowerRequestForm = () => {
               <option value="Grade B">Grade B</option>
             </select>
             {errors.grade && <p className="text-red-500 text-sm">{errors.grade}</p>}
+            
           </div>
 
           {/*  Department */}
@@ -206,6 +211,35 @@ const ManpowerRequestForm = () => {
             </select>
             {errors.department && <p className="text-red-500 text-sm">{errors.department}</p>}
           </div>
+
+       {/* From Date to To Date  */}
+
+       <div>
+            <label className="block text-gray-700 text-sm font-bold mb-1">From Date</label>
+            <input
+              type="date"
+              name="fromDate"
+              value={formData.fromDate}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+              placeholder="Select Date"
+            />
+            {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
+          </div>
+
+          <div>
+            <label className="block text-gray-700 text-sm font-bold mb-1">To Date</label>
+            <input
+              type="date"
+              name="toDate"
+              value={formData.toDate}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+              placeholder="Select Date"
+            />
+            {errors.location && <p className="text-red-500 text-sm">{errors.location}</p>}
+          </div>
+
 
           {/*  Budget with Validation */}
           <div>
